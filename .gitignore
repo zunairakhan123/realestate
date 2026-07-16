@@ -1,0 +1,25 @@
+# Security / Secrets (CRITICAL)
+.env
+*.env
+.env.*
+
+# Virtual Environments
+env/
+venv/
+.venv/
+
+# Python Cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# IDE and OS Files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Testing and Coverage
+.pytest_cache/
+.coverage
+htmlcov/
