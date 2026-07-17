@@ -5,7 +5,7 @@ from sqlalchemy.orm import selectinload
 from app.leads.models import Lead, LeadStatus  # Ensure LeadStatus is imported
 from app.leads.schemas import LeadCreate, LeadUpdate
 from app.core.exceptions import NotFoundError
-
+from app.core.events import event_bus
 async def create_lead(db: AsyncSession, data: LeadCreate) -> Lead:
     lead = Lead(**data.model_dump())
     db.add(lead)
@@ -47,13 +47,28 @@ async def get_lead_detail(db: AsyncSession, lead_id: UUID) -> Lead:
     return lead
 
 async def update_lead(db: AsyncSession, lead_id: UUID, data: LeadUpdate) -> Lead:
-    lead = await db.scalar(select(Lead).where(Lead.id == lead_id))
-    if not lead:
-        raise NotFoundError("Lead not found")
+    # 1. Fetch the lead (This handles the 404 check automatically!)
+    lead = await get_lead_detail(db, lead_id)
+    
+    # 2. Apply updates
     for key, value in data.model_dump(exclude_unset=True).items():
         setattr(lead, key, value)
+        
     await db.commit()
     await db.refresh(lead)
+    
+    # 3. Check for terminal status
+    # Note: Make sure these exactly match your LeadStatus enum values
+    terminal_states = ["won", "lost", "cancelled"] 
+    
+    if data.status and data.status.value in terminal_states:
+        payload = {
+            "id": str(lead.id),
+            "status": lead.status.value,
+            "agent_id": str(lead.agent_id)
+        }
+        event_bus.emit("lead_terminal_status", payload)
+
     return lead
 
 async def delete_lead(db: AsyncSession, lead_id: UUID):

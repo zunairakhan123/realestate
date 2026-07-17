@@ -44,12 +44,12 @@ async def list_customers(db: AsyncSession, skip: int, limit: int, filters: dict)
     # Inside the list_customers function, add this block:
     if filters.get("has_active_leads") is not None:
         active_statuses = [LeadStatus.new, LeadStatus.contacted, LeadStatus.qualified, LeadStatus.viewing, LeadStatus.offered]
-    if filters["has_active_leads"]:
+        if filters["has_active_leads"]:
             # Returns customers who have AT LEAST ONE active lead
-        stmt = stmt.where(Customer.leads.any(Lead.status.in_(active_statuses)))
-    else:
+            stmt = stmt.where(Customer.leads.any(Lead.status.in_(active_statuses)))
+        else:
             # Returns customers who have NO active leads
-        stmt = stmt.where(~Customer.leads.any(Lead.status.in_(active_statuses)))
+            stmt = stmt.where(~Customer.leads.any(Lead.status.in_(active_statuses)))
 
     # Count the total number of matching records before pagination.
     total = await db.scalar(

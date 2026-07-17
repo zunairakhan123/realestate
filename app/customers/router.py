@@ -7,6 +7,10 @@ from app.db.session import get_db
 from app.core.config import get_settings, Settings
 from app.core.exceptions import NotFoundError, ConflictError
 from app.customers import schemas, service
+from app.core.rate_limit import RateLimiter
+
+# Example: Strict limit of 5 requests per 60 seconds
+write_limiter = RateLimiter(max_requests=5, window_seconds=60)
 
 # Routes for customer management.
 router = APIRouter(prefix="/customers", tags=["Customers"])
@@ -14,7 +18,7 @@ router = APIRouter(prefix="/customers", tags=["Customers"])
 
 # Create a new customer.
 # Returns HTTP 409 if the email already exists.
-@router.post("/", response_model=schemas.CustomerOut, status_code=201)
+@router.post("/", response_model=schemas.CustomerOut, status_code=201,dependencies=[Depends(write_limiter)])
 async def create_customer(
     data: schemas.CustomerCreate,
     db: AsyncSession = Depends(get_db)
@@ -77,7 +81,7 @@ async def get_customer(
 
 # Partially update an existing customer.
 # Only the fields provided in the request are modified.
-@router.patch("/{id}", response_model=schemas.CustomerOut)
+@router.patch("/{id}", response_model=schemas.CustomerOut,dependencies=[Depends(write_limiter)])
 async def update_customer(
     id: UUID,
     data: schemas.CustomerUpdate,
@@ -94,7 +98,7 @@ async def update_customer(
 
 # Delete a customer.
 # Business rules may prevent deletion if the customer has active leads.
-@router.delete("/{id}", status_code=204)
+@router.delete("/{id}", status_code=204,dependencies=[Depends(write_limiter)])
 async def delete_customer(
     id: UUID,
     db: AsyncSession = Depends(get_db),

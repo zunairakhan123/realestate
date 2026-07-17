@@ -6,10 +6,14 @@ from app.db.session import get_db
 from app.core.exceptions import NotFoundError
 from app.properties import schemas, service
 from app.properties.models import PropertyStatus
+from app.core.rate_limit import RateLimiter
+
+# Example: Strict limit of 5 requests per 60 seconds
+write_limiter = RateLimiter(max_requests=5, window_seconds=60)
 
 router = APIRouter(prefix="/properties", tags=["Properties"])
 
-@router.post("/", response_model=schemas.PropertyOut, status_code=201)
+@router.post("/", response_model=schemas.PropertyOut, status_code=201,dependencies=[Depends(write_limiter)])
 async def create_property(data: schemas.PropertyCreate, db: AsyncSession = Depends(get_db)):
     return await service.create_property(db, data)
 
@@ -37,14 +41,14 @@ async def get_property(id: UUID, db: AsyncSession = Depends(get_db)):
     except NotFoundError as e:
         raise HTTPException(status_code=404, detail=str(e))
 
-@router.patch("/{id}", response_model=schemas.PropertyOut)
+@router.patch("/{id}", response_model=schemas.PropertyOut,dependencies=[Depends(write_limiter)])
 async def update_property(id: UUID, data: schemas.PropertyUpdate, db: AsyncSession = Depends(get_db)):
     try:
         return await service.update_property(db, id, data)
     except NotFoundError as e:
         raise HTTPException(status_code=404, detail=str(e))
 
-@router.delete("/{id}", status_code=204)
+@router.delete("/{id}", status_code=204,dependencies=[Depends(write_limiter)])
 async def delete_property(id: UUID, db: AsyncSession = Depends(get_db)):
     try:
         await service.delete_property(db, id)
