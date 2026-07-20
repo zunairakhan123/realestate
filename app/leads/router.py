@@ -12,7 +12,7 @@ from app.core.auth import verify_lead_access
 from app.core.rate_limit import RateLimiter
 
 # Example: Strict limit of 5 requests per 60 seconds
-write_limiter = RateLimiter(max_requests=5, window_seconds=60)
+write_limiter = RateLimiter(max_requests=5, window_seconds=60) #had to increase the limit for locust testing, but in production, you might want to set it lower.
 
 router = APIRouter(prefix="/leads", tags=["Leads"])
 

@@ -1,45 +1,73 @@
-# locustfile.py
 from locust import HttpUser, task, between
-import random
 
-class RealtyAgentUser(HttpUser):
-    # Wait 1 to 3 seconds between tasks to simulate human reading time
-    wait_time = between(1, 3) 
-    
+# ==========================================
+# Paste your JWT token here
+# ==========================================
+JWT_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwZDNhZWZmOS1iOWUyLTQzOWItYWRmNS0wMTFiNDlkOWUxNzQiLCJyb2xlIjoiYWRtaW4iLCJleHAiOjE3ODQ1MzkzNjB9.sph4Vg2KDLAsnvi_NjQRUQt4ut418A2DjBfo5wHqtXQ"
+
+# ==========================================
+# Replace with a REAL lead UUID
+# ==========================================
+LEAD_ID = "c0b3849b-1281-44c3-93e3-c53b8901ec57"
+
+
+class RealtyUser(HttpUser):
+    host = "http://127.0.0.1:8000"
+
+    # Wait 1–3 seconds between requests
+    wait_time = between(1, 3)
+
     def on_start(self):
-        """This runs once per user when they spawn. We use it to log in."""
-        # Create a unique email for this specific simulated user
-        self.email = f"agent_{random.randint(1, 99999)}@loadtest.com"
-        
-        # 1. Sign up
-        self.client.post("/auth/signup", json={
-            "email": self.email,
-            "password": "loadtestpassword",
-            "role": "agent"
+        """
+        Runs once when each simulated user starts.
+        Adds the JWT token to every request.
+        """
+        self.client.headers.update({
+            "Authorization": f"Bearer {JWT_TOKEN}",
+            "Content-Type": "application/json",
+            "Accept": "application/json"
         })
-        
-        # 2. Log in to get the JWT
-        response = self.client.post("/auth/login", json={
-            "email": self.email,
-            "password": "loadtestpassword"
-        })
-        
-        if response.status_code == 200:
-            token = response.json().get("access_token")
-            # 3. Attach the token to all future requests automatically
-            self.client.headers.update({"Authorization": f"Bearer {token}"})
+
+        print("JWT token added successfully.")
 
     @task(3)
-    def view_leads_list(self):
-        """Busiest Read Endpoint (Weighted 3x more frequent)"""
-        self.client.get("/leads/?skip=0&limit=50")
+    def view_leads(self):
+        """
+        Busiest READ endpoint.
+        Runs 3x more often than update.
+        """
+        with self.client.get(
+            "/leads/?skip=0&limit=50",
+            name="GET /leads",
+            catch_response=True,
+        ) as response:
+
+            if response.status_code == 200:
+                response.success()
+            else:
+                response.failure(
+                    f"Unexpected Status: {response.status_code}\n{response.text}"
+                )
 
     @task(1)
     def update_lead_status(self):
-        """Busiest Write Endpoint"""
-        # Using a dummy UUID. It will return a 404, but it still heavily tests 
-        # the JWT middleware, request logger, database connection, and query speed.
-        dummy_lead_id = "00000000-0000-0000-0000-000000000000"
-        self.client.patch(f"/leads/{dummy_lead_id}", json={
+        """
+        Busiest WRITE endpoint.
+        """
+        payload = {
             "status": "contacted"
-        })
+        }
+
+        with self.client.patch(
+            f"/leads/{LEAD_ID}",
+            json=payload,
+            name="PATCH /leads/{id}",
+            catch_response=True,
+        ) as response:
+
+            if response.status_code in (200, 204):
+                response.success()
+            else:
+                response.failure(
+                    f"Unexpected Status: {response.status_code}\n{response.text}"
+                )
