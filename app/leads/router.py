@@ -55,3 +55,5 @@ async def update_lead(id: UUID, data: schemas.LeadUpdate, db: AsyncSession = Dep
 @router.delete("/{id}", status_code=204, dependencies=[Depends(verify_lead_access), Depends(write_limiter)])
 async def delete_lead(id: UUID, db: AsyncSession = Depends(get_db)):
     await service.delete_lead(db, id)
+
+

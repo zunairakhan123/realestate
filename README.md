@@ -1,116 +1,266 @@
-# Realty Service API
+#  Realty Service API
 
-A high-performance, asynchronous REST API built with FastAPI and PostgreSQL. This service manages real estate operations across three distinct domains: `customers`, `properties`, and `leads`. It features a fully decoupled architecture, asynchronous database I/O, strict referential integrity, and advanced query filtering.
+A high-performance, asynchronous, event-driven REST API built with **FastAPI** and **PostgreSQL** for managing real estate operations — customers, properties, and leads — with a focus on decoupling, security, and scalability.
 
-## Technology Stack
+![Python](https://img.shields.io/badge/Python-3.11%2B-blue?logo=python&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-0.110%2B-009688?logo=fastapi&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15%2B-336791?logo=postgresql&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-lightgrey)
 
-* **Framework:** FastAPI, Uvicorn (ASGI)
-* **Database & ORM:** PostgreSQL, SQLAlchemy 2.0 (`Mapped` / `mapped_column` paradigms)
-* **Database Driver:** `asyncpg` for non-blocking I/O
-* **Migrations:** Alembic (configured for async execution)
-* **Validation & Config:** Pydantic, `pydantic-settings`
-* **Language:** Python 3.12
+---
+
+##  Table of Contents
+
+- [Overview](#-overview)
+- [Technology Stack](#-technology-stack)
+- [Architectural Decisions](#-architectural-decisions)
+- [Project Structure](#-project-structure)
+- [Getting Started](#-getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Local Setup](#local-setup--installation)
+  - [Configuration](#configuration)
+  - [Database Migrations](#database-migrations)
+  - [Running the Application](#running-the-application)
+- [Testing & Load Testing](#-testing--load-testing)
+- [Operational & DevOps](#-operational--devops)
+- [API Health & Verification](#-api-health--verification)
+- [Production Readiness Roadmap](#-production-readiness-roadmap)
+- [Contributing](#-contributing)
+- [License](#-license)
+
+---
+
+## Overview
+
+The Realty Service API is a backend service designed to power real estate platforms. It handles the full lifecycle of **leads**, **properties**, and **customers**, exposing a clean REST interface alongside real-time WebSocket notifications for state changes. The system is built to be modular, testable, and container-ready for cloud deployment.
+
+---
+
+## 🛠 Technology Stack
+
+| Category | Technology |
+|---|---|
+| **Framework** | FastAPI, Uvicorn (ASGI), Gunicorn |
+| **Database & ORM** | PostgreSQL, SQLAlchemy 2.0 (`asyncpg` driver) |
+| **Migrations** | Alembic (async) |
+| **Real-time** | WebSockets (Connection Manager pattern) |
+| **Testing** | Pytest, Postman / Newman, Locust |
+| **Infrastructure** | Docker, Docker Compose, Cloudflare Tunnel |
 
 ---
 
 ## Architectural Decisions
 
-This project strictly adheres to a domain-driven, vertical-slice architecture to ensure the service remains scalable, maintainable, and ready for CI/CD pipelines.
+- **Domain-Driven Structure** — Codebase is organized by business domain (`leads`, `properties`, `customers`) to ensure module isolation and simplified maintenance.
+- **Decoupled Service Layer** — Business logic lives in `service.py`, separated from HTTP concerns, allowing execution via background tasks or CLI.
+- **Event-Driven Real-time** — A centralized `ConnectionManager` pushes WebSocket notifications on state changes (e.g., status updates).
+- **Security** — HMAC-SHA256 signature verification for inbound webhooks; containers run as non-root.
+- **Resiliency** — Implements the **Accept-Now / Callback-Later** pattern to bypass gateway timeout limits for long-running AI processing tasks.
 
-### Feature-Based Folder Structure
+---
+## 📂 Project Structure
+realty/
+├── app/
+│   ├── main.py                  # FastAPI application entrypoint
+│   ├── core/                    # Config, security, connection manager
+│   ├── auth/                    # Authentication & authorization logic
+│   ├── notifications/           # WebSocket / notification dispatch
+│   ├── webhooks/                # Inbound webhook handlers (HMAC verification)
+│   ├── domains/
+│   │   ├── leads/
+│   │   │   ├── router.py
+│   │   │   ├── service.py
+│   │   │   ├── models.py
+│   │   │   └── schemas.py
+│   │   ├── properties/
+│   │   │   ├── router.py
+│   │   │   ├── service.py
+│   │   │   ├── models.py
+│   │   │   └── schemas.py
+│   │   └── customers/
+│   │       ├── router.py
+│   │       ├── service.py
+│   │       ├── models.py
+│   │       └── schemas.py
+│   └── db/
+│       ├── session.py
+│       └── base.py
+├── alembic/
+│   ├── versions/
+│   └── env.py
+├── tests/
+│   ├── locustfile.py
+│   └── ...
+├── docker-compose.yml
+├── Dockerfile
+├── requirements.txt
+├── .env.example
+└── README.md
 
-Instead of grouping files by their technical layer (e.g., placing all models in a `models/` directory and all routers in a `routers/` directory), the codebase is organized by business domain: `leads`, `properties`, and `customers`. Each domain encapsulates its own complete stack:
-
-* `models.py`: SQLAlchemy database schemas.
-* `schemas.py`: Pydantic data transfer objects (DTOs).
-* `service.py`: Core business logic and database queries.
-* `router.py`: HTTP endpoint definitions.
-
-**Why this shape:** This strict boundary management prevents tight coupling across unrelated entities. It ensures that logic remains cohesive and makes it significantly easier to extract a specific domain into an independent microservice in the future if traffic requirements scale unevenly.
-
-### Decoupled Service Layer
-
-The `service.py` files encapsulate all business rules and database transactions without importing a single dependency from FastAPI. When a business rule is violated, the service raises an agnostic custom Python exception (`ConflictError`, `NotFoundError`). The `router.py` catches these and translates them to HTTP status codes.
-
-**Why this matters:** Separating HTTP concerns from business logic makes the service layer highly testable. It allows the core logic to be invoked via background tasks, CLI commands, or data pipelines without requiring an active ASGI application context.
-
-### Delete Protections & Constraint Safety Nets
-
-Deleting a customer who still has active leads presents a significant data integrity risk. This application implements a dual-layer safeguard:
-
-1. **Application Layer Guard:** The service actively evaluates a configured business rule to restrict deletion if the user holds active leads (`new`, `contacted`, `qualified`). If violated, it gracefully raises a 409 Conflict.
-2. **Database Layer Constraint:** To prevent race conditions or integrity failures related to terminal leads, `ON DELETE RESTRICT` foreign key constraints are enforced directly at the PostgreSQL level. The SQLAlchemy models are configured with `passive_deletes="all"` to delegate this enforcement to the database engine. If triggered, the application catches the resulting `IntegrityError` and maps it to a 409 Conflict rather than allowing the server to crash with a 500 error.
-
-### Local Postgres Integration
-
-The application connects to the database asynchronously via the `asyncpg` driver, maximizing concurrency under high throughput. Local connection settings are dynamically loaded from a `.env` file via Pydantic's `BaseSettings`, ensuring secure, environment-agnostic deployment configurations that align with Twelve-Factor App principles.
+> Adjust this tree to match your actual repository layout as the project evolves.
 
 ---
 
-## Local Setup & Installation
+## Getting Started
 
-### 1. Environment Preparation
+### Prerequisites
 
-Ensure you have Python 3.12 installed. Create and activate a virtual environment:
+- Python 3.11+
+- PostgreSQL 15+
+- Docker & Docker Compose (optional, for containerized setup)
+
+### Local Setup & Installation
+
+**1. Create and activate a virtual environment**
 
 ```bash
 python -m venv env
-# Windows: env\Scripts\activate
-# Mac/Linux: source env/bin/activate
+
+# Windows
+env\Scripts\activate
+
+# Linux / Mac
+source env/bin/activate
 ```
 
-Install the dependencies:
+**2. Install dependencies**
 
 ```bash
-pip install fastapi uvicorn "sqlalchemy>=2.0" alembic asyncpg pydantic-settings "pydantic[email]"
+pip install -r requirements.txt
 ```
 
-### 2. Database Provisioning
+### Configuration
 
-Ensure PostgreSQL is running locally and execute the following SQL to provision the user and database:
-
-```sql
-CREATE DATABASE realty;
-CREATE USER realty_app WITH PASSWORD 'zunaira';
-GRANT ALL PRIVILEGES ON DATABASE realty TO realty_app;
-ALTER DATABASE realty OWNER TO realty_app;
-```
-
-### 3. Configuration File
-
-Create a `.env` file in the root of the project to securely inject environment variables:
+Create a `.env` file in the project root:
 
 ```env
-DATABASE_URL=postgresql+asyncpg://realty_app:zunaira@localhost:5432/realty
-ENFORCE_CUSTOMER_DELETE_GUARD=true
-DEBUG=true
+DATABASE_URL=postgresql+asyncpg://user:password@db:5432/db_name
 ```
 
-### 4. Database Migrations
+| Variable | Description | Example |
+|---|---|---|
+| `DATABASE_URL` | Async PostgreSQL connection string | `postgresql+asyncpg://user:password@db:5432/db_name` |
 
-Initialize the schema using Alembic. This will automatically execute the DDL to create the domains and their foreign key constraints.
+> Never commit `.env` files to version control. Use `.env.example` as a template for collaborators.
+
+### Database Migrations
+
+Apply schema migrations:
 
 ```bash
 python -m alembic upgrade head
 ```
 
-### 5. Running the Application
-
-Start the ASGI server with hot-reloading enabled for development:
+### Running the Application
 
 ```bash
 python -m uvicorn app.main:app --reload
 ```
 
-Navigate to `http://localhost:8000/docs` to view the interactive Swagger UI and test the API endpoints.
+The API will be available at `http://localhost:8000`. Interactive docs are auto-generated by FastAPI at:
+
+- Swagger UI: `http://localhost:8000/docs`
+- ReDoc: `http://localhost:8000/redoc`
 
 ---
 
-## API Capabilities
+## Testing & Load Testing
 
-* **Full CRUD:** Comprehensive POST, GET, PATCH, and DELETE operations across all three domains.
-* **Nested Reads:** The `GET /leads/{id}` endpoint natively embeds the related Customer and Property data. This is achieved using SQLAlchemy's `selectinload` strategy to execute the retrieval without triggering an N+1 query performance bottleneck.
-* **Advanced Filtering:** List endpoints (`GET /`) support complex query parameters combined with `AND` logic, including:
-  * Partial text matching (`.ilike`) for customer names and emails.
-  * Relational subqueries (e.g., filtering customers by `has_active_leads`).
-  * Numerical and chronological boundary operators (`min_price`, `created_after`).
+### 1. Unit & Integration Tests (Pytest)
+
+Run the full test suite to verify business logic and integrity guards:
+
+```bash
+pytest tests/
+```
+
+### 2. API Contract Tests (Newman / Postman)
+
+Ensure your Postman collection and environment is exported as `collection.json`, `environment.json` then run:
+
+```bash
+newman run collection.json -e environment.json --env-var "baseUrl=http://localhost:8000" > newman_evidence.txt
+```
+
+### 3. Load Testing (Locust)
+
+Simulate concurrent, high-traffic scenarios:
+
+```bash
+locust -f tests/locustfile.py --host=http://localhost:8000
+```
+
+Access the Locust UI at `http://localhost:8089`.
+
+---
+
+## ⚙️ Operational & DevOps
+
+### Webhook Integration
+
+Expose your local service for external webhook testing using `cloudflared`:
+
+```bash
+.\cloudflared.exe tunnel --url http://127.0.0.1:8000
+```
+
+### Containerization (Docker)
+
+Build and run the full stack (App + PostgreSQL) using Docker Compose:
+
+```bash
+docker-compose up --build
+```
+
+---
+
+## API Health & Verification
+
+Once the service is running, verify system integrity via the following endpoints:
+
+| Endpoint | Purpose |
+|---|---|
+| `GET /health` | Liveness check — confirms the application process is running |
+| `GET /ready` | Readiness check — confirms dependencies (e.g., database) are reachable |
+
+```bash
+curl http://localhost:8000/health
+curl http://localhost:8000/ready
+```
+
+---
+
+## 🗺 Production Readiness Roadmap
+
+The following areas are identified for refinement before a full production deployment:
+
+| Area | Current State | Recommended Improvement |
+|---|---|---|
+| **Observability** | Basic logging | Structured logging (`structlog`) + distributed tracing |
+| **Secret Management** | `.env` file | Secure vault (AWS Secrets Manager, HashiCorp Vault) |
+| **Task Queues** | FastAPI `BackgroundTasks` | Distributed queue (Celery or ARQ with Redis) for persistent, retryable tasks |
+| **Rate Limiting** | Not implemented | `slowapi` to protect against brute force / DDoS |
+| **Schema Versioning** | Manual `alembic upgrade` | Automate migrations within CI/CD pipeline |
+
+---
+
+## Contributing
+
+Contributions are welcome. Please:
+
+1. Fork the repository and create a feature branch.
+2. Follow the existing domain-driven structure for new modules.
+3. Add or update tests under `tests/` for any behavioral change.
+4. Run `pytest tests/` and ensure all checks pass before opening a pull request.
+5. Submit a PR with a clear description of the change and its motivation.
+
+---
+
+## 📄 License
+
+This project is licensed under the [MIT License](LICENSE) — feel free to use, modify, and distribute with attribution.
+
+---
+
+<p align="center"><sub>Built with FastAPI, PostgreSQL, and a domain-driven mindset.</sub></p>

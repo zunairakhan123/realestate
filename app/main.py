@@ -1,62 +1,129 @@
-from fastapi import FastAPI
+import time
+import asyncio
+from contextlib import asynccontextmanager
+
+from fastapi import FastAPI, Request
+from fastapi.responses import JSONResponse
+
+# Routers
+from app.auth.router import router as auth_router
 from app.customers.router import router as customers_router
 from app.properties.router import router as properties_router
 from app.leads.router import router as leads_router
-from fastapi import FastAPI
+
+# Core & Middleware
 from app.core.middleware import RequestLoggingMiddleware
-from fastapi import FastAPI, Request
-from fastapi.responses import JSONResponse
-from app.core.exceptions import PermissionDeniedError
-import jwt
-from datetime import datetime, timedelta, timezone
-from fastapi import FastAPI
-from app.core.exceptions import RateLimitExceededError
-from contextlib import asynccontextmanager
-from fastapi import FastAPI
 from app.core.events import event_bus
 from app.notifications.listeners import handle_terminal_lead
-import time
-import asyncio
-from fastapi import APIRouter
 
-# Use FastAPI's modern lifespan manager for startup events
+from app.webhooks.router import router as webhook_router  # 1. Import the router
+
+# Exceptions
+from app.core.exceptions import (
+    PermissionDeniedError,
+    AuthenticationError,
+    RateLimitExceededError,
+    NotFoundError,
+    ConflictError
+)
+from fastapi import WebSocket, WebSocketDisconnect
+from app.core.websockets import manager
+from app.db.session import get_db  # Updated import path
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import text
+from fastapi import Depends, HTTPException
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # 1. Subscribe the listener to the event
+    # Subscribe the listener to the event on startup
     event_bus.subscribe("lead_terminal_status", handle_terminal_lead)
     yield
-    # Teardown logic (if any) would go here
 
-# Attach lifespan to app
+
+# Initialize App
 app = FastAPI(title="Realty Service API", lifespan=lifespan)
-# Add the middleware
+
+@app.get("/health", tags=["System"])
+async def health_check():
+    return {"status": "ok"}
+
+@app.get("/ready", tags=["System"])
+async def readiness_check(db: AsyncSession = Depends(get_db)):
+    try:
+        await db.execute(text("SELECT 1"))
+        return {"status": "ready", "database": "connected"}
+    except Exception as e:
+        raise HTTPException(status_code=503, detail="Database not ready")
+
+@app.websocket("/ws/leads/{lead_id}")
+async def websocket_lead_endpoint(websocket: WebSocket, lead_id: str):
+    await manager.connect(websocket, lead_id)
+    try:
+        while True:
+            # Keep the connection open waiting for server pushes
+            data = await websocket.receive_text()
+    except WebSocketDisconnect:
+        manager.disconnect(websocket, lead_id)
+
+
+# Add Middleware
 app.add_middleware(RequestLoggingMiddleware)
 
-# Add this just for testing your endpoints
-@app.get("/generate-token")
-def get_test_token(user_id: str, role: str):
-    payload = {
-        "sub": user_id,
-        "role": role,
-        "exp": datetime.now(timezone.utc) + timedelta(hours=2) # Expires in 2 hours
-    }
-    # Must match the secret in auth.py
-    token = jwt.encode(payload, "zunaira", algorithm="HS256")
-    return {"access_token": token}
+
+# --- Global Exception Handlers ---
+
+@app.exception_handler(NotFoundError)
+async def not_found_handler(request: Request, exc: NotFoundError):
+    return JSONResponse(
+        status_code=404,
+        content={
+            "error": {
+                "code": "NOT_FOUND",
+                "message": str(exc),
+                "request_id": request.headers.get("X-Request-ID", "unknown")
+            }
+        }
+    )
+
+@app.exception_handler(ConflictError)
+async def conflict_handler(request: Request, exc: ConflictError):
+    return JSONResponse(
+        status_code=409,
+        content={
+            "error": {
+                "code": "CONFLICT",
+                "message": str(exc),
+                "request_id": request.headers.get("X-Request-ID", "unknown")
+            }
+        }
+    )
 
 @app.exception_handler(PermissionDeniedError)
 async def permission_denied_handler(request: Request, exc: PermissionDeniedError):
-    # Standard error envelope
     return JSONResponse(
         status_code=403,
         content={
             "error": {
                 "code": "FORBIDDEN",
-                "message": exc.message,
+                "message": str(exc),
                 "request_id": request.headers.get("X-Request-ID", "unknown")
             }
         }
     )
+
+@app.exception_handler(AuthenticationError)
+async def authentication_error_handler(request: Request, exc: AuthenticationError):
+    return JSONResponse(
+        status_code=401,
+        content={
+            "error": {
+                "code": "UNAUTHORIZED",
+                "message": str(exc),
+                "request_id": request.headers.get("X-Request-ID", "unknown")
+            }
+        }
+    )
+
 @app.exception_handler(RateLimitExceededError)
 async def rate_limit_handler(request: Request, exc: RateLimitExceededError):
     return JSONResponse(
@@ -64,18 +131,23 @@ async def rate_limit_handler(request: Request, exc: RateLimitExceededError):
         content={
             "error": {
                 "code": "TOO_MANY_REQUESTS",
-                "message": exc.message,
+                "message": str(exc),
                 "request_id": request.headers.get("X-Request-ID", "unknown")
             }
         }
     )
 
+
+# --- Register Routers ---
+app.include_router(auth_router)
 app.include_router(customers_router)
 app.include_router(properties_router)
 app.include_router(leads_router)
+app.include_router(webhook_router)   #auto-generated Swagger UI (/docs) will group all webhook-related endpoints under a single, easy-to-read section.
 
+# --- Async Proof Endpoints ---
 
-@app.get("/test-bad-async")
+@app.get("/test-bad-async", tags=["Async Proof"])
 async def bad_async_endpoint():
     """
     INCORRECT: A synchronous blocking call inside an async def.
@@ -85,7 +157,7 @@ async def bad_async_endpoint():
     return {"status": "done", "type": "bad"}
 
 
-@app.get("/test-good-async")
+@app.get("/test-good-async", tags=["Async Proof"])
 async def good_async_endpoint():
     """
     CORRECT: Yields control back to the event loop.

@@ -1,0 +1,205 @@
+newman
+
+Realty Service API
+
+□ auth / signup
+└ Signup
+  POST http://127.0.0.1:8000/auth/login [200 OK, 464B, 1232ms]
+  POST http://127.0.0.1:8000/auth/signup [409 Conflict, 298B, 13ms]
+  √  Status code is successful
+  √  Response time is less than 500ms
+  √  Response is valid JSON
+
+□ auth / login
+└ Login
+  POST http://127.0.0.1:8000/auth/login [200 OK, 464B, 370ms]
+  POST http://127.0.0.1:8000/auth/login [200 OK, 464B, 374ms]
+  √  Status code is successful
+  √  Response time is less than 500ms
+  √  Response is valid JSON
+
+□ customers / {id}
+└ Get Customer
+  POST http://127.0.0.1:8000/auth/login [200 OK, 464B, 374ms]
+  GET http://127.0.0.1:8000/customers/ab90d276-fb63-d54d-f7d8-9f026cf46a60 [404 Not Found, 211B, 58ms]
+  √  Status code is successful
+  √  Response time is less than 500ms
+  √  Response is valid JSON
+
+└ Update Customer
+  POST http://127.0.0.1:8000/auth/login [200 OK, 464B, 371ms]
+  PATCH http://127.0.0.1:8000/customers/ab90d276-fb63-d54d-f7d8-9f026cf46a60 [404 Not Found, 211B, 9ms]
+  √  Status code is successful
+  √  Response time is less than 500ms
+  √  Response is valid JSON
+
+└ Delete Customer
+  POST http://127.0.0.1:8000/auth/login [200 OK, 464B, 375ms]
+  DELETE http://127.0.0.1:8000/customers/ab90d276-fb63-d54d-f7d8-9f026cf46a60 [404 Not Found, 211B, 108ms]
+  √  Status code is successful
+  √  Response time is less than 500ms
+  √  Response is valid JSON
+
+□ customers
+└ Create Customer
+  POST http://127.0.0.1:8000/auth/login [200 OK, 464B, 394ms]
+  POST http://127.0.0.1:8000/customers/ [201 Created, 400B, 27ms]
+  √  Status code is successful
+  √  Response time is less than 500ms
+  √  Response is valid JSON
+
+└ List Customers
+  POST http://127.0.0.1:8000/auth/login [200 OK, 464B, 366ms]
+  GET http://127.0.0.1:8000/customers/?skip=0&limit=20&name=string&email=string&phone=string&created_after=2006-07-08T02:48:31.637Z&created_before=2006-07-08T02:48:31.637Z&has_active_leads=false [200 OK, 195B, 28ms]
+  √  Status code is successful
+  √  Response time is less than 500ms
+  √  Response is valid JSON
+
+□ properties / {id}
+└ Get Property
+  POST http://127.0.0.1:8000/auth/login [200 OK, 464B, 370ms]
+  GET http://127.0.0.1:8000/properties/a383eaf9-07a1-4172-b2b1-197afcf50716 [200 OK, 397B, 38ms]
+  √  Status code is successful
+  √  Response time is less than 500ms
+  √  Response is valid JSON
+
+└ Update Property
+  POST http://127.0.0.1:8000/auth/login [200 OK, 464B, 365ms]
+  PATCH http://127.0.0.1:8000/properties/ab90d276-fb63-d54d-f7d8-9f026cf46a60 [404 Not Found, 211B, 8ms]
+  √  Status code is successful
+  √  Response time is less than 500ms
+  √  Response is valid JSON
+
+└ Delete Property
+  POST http://127.0.0.1:8000/auth/login [200 OK, 464B, 380ms]
+  DELETE http://127.0.0.1:8000/properties/ab90d276-fb63-d54d-f7d8-9f026cf46a60 [404 Not Found, 211B, 8ms]
+  √  Status code is successful
+  √  Response time is less than 500ms
+  √  Response is valid JSON
+
+□ properties
+└ Create Property
+  POST http://127.0.0.1:8000/auth/login [200 OK, 464B, 366ms]
+  POST http://127.0.0.1:8000/properties/ [201 Created, 396B, 15ms]
+  √  Status code is successful
+  √  Response time is less than 500ms
+  √  Response is valid JSON
+
+└ List Properties
+  POST http://127.0.0.1:8000/auth/login [200 OK, 464B, 385ms]
+  GET http://127.0.0.1:8000/properties/?skip=0&limit=20&city=string&status=available&min_price=1503.9137455690432&max_price=1503.9137455690432&min_bedrooms=2&exact_bedrooms=1 [200 OK, 195B, 18ms]
+  √  Status code is successful
+  √  Response time is less than 500ms
+  √  Response is valid JSON
+
+□ leads / {id}
+└ Get Lead
+  POST http://127.0.0.1:8000/auth/login [200 OK, 464B, 366ms]
+  GET http://127.0.0.1:8000/leads/ab90d276-fb63-d54d-f7d8-9f026cf46a60 [403 Forbidden, 277B, 18ms]
+  √  Status code is successful
+  √  Response time is less than 500ms
+  √  Response is valid JSON
+
+└ Update Lead
+  POST http://127.0.0.1:8000/auth/login [200 OK, 464B, 374ms]
+  PATCH http://127.0.0.1:8000/leads/3fa85f64-5717-4562-b3fc-2c963f66afa6 [404 Not Found, 260B, 18ms]
+  √  Status code is successful
+  √  Response time is less than 500ms
+  √  Response is valid JSON
+
+└ Delete Lead
+  POST http://127.0.0.1:8000/auth/login [200 OK, 464B, 376ms]
+  DELETE http://127.0.0.1:8000/leads/ab90d276-fb63-d54d-f7d8-9f026cf46a60 [403 Forbidden, 299B, 6ms]
+  √  Status code is successful
+  √  Response time is less than 500ms
+  √  Response is valid JSON
+
+□ leads
+└ Create Lead
+  POST http://127.0.0.1:8000/auth/login [200 OK, 464B, 365ms]
+  POST http://127.0.0.1:8000/leads/ [500 Internal Server Error, 174B, 32ms]
+  1. Status code is successful
+  √  Response time is less than 500ms
+  2. Response is valid JSON
+
+└ List Leads
+  POST http://127.0.0.1:8000/auth/login [errored]
+     read ECONNRESET
+  POST http://127.0.0.1:8000/auth/signup [409 Conflict, 310B, 12ms]
+  ┌
+  │ 'Failed to acquire token:', {
+  │   error: {
+  │     code: 'CONFLICT',
+  │     message: "A user with email 'postman_test_agent@re
+  │ alty.com' already exists.",
+  │     request_id: 'unknown'
+  │   }
+  │ }
+  └
+  GET http://127.0.0.1:8000/leads/?skip=0&limit=20&status=cancelled&agent_id=string&customer_id=fc8767d8-2efa-bffa-8b1a-e928683000d5&property_id=fc8767d8-2efa-bffa-8b1a-e928683000d5&created_after=2006-07-08T02:48:31.637Z&is_closed=false [200 OK, 195B, 16ms]
+  √  Status code is successful
+  √  Response time is less than 500ms
+  √  Response is valid JSON
+
+□ test-bad-async
+└ Bad Async Endpoint
+  POST http://127.0.0.1:8000/auth/login [200 OK, 464B, 377ms]
+  GET http://127.0.0.1:8000/test-bad-async [200 OK, 203B, 1008ms]
+  √  Status code is successful
+  4. Response time is less than 500ms
+  √  Response is valid JSON
+
+□ test-good-async
+└ Good Async Endpoint
+  POST http://127.0.0.1:8000/auth/login [200 OK, 464B, 368ms]
+  GET http://127.0.0.1:8000/test-good-async [200 OK, 204B, 1007ms]
+  √  Status code is successful
+  5. Response time is less than 500ms
+  √  Response is valid JSON
+
+┌─────────────────────────┬────────────────────┬────────────────────┐
+│                         │           executed │             failed │
+├─────────────────────────┼────────────────────┼────────────────────┤
+│              iterations │                  1 │                  0 │
+├─────────────────────────┼────────────────────┼────────────────────┤
+│                requests │                 39 │                  1 │
+├─────────────────────────┼────────────────────┼────────────────────┤
+│            test-scripts │                 19 │                  0 │
+├─────────────────────────┼────────────────────┼────────────────────┤
+│      prerequest-scripts │                 19 │                  0 │
+├─────────────────────────┼────────────────────┼────────────────────┤
+│              assertions │                 57 │                  4 │
+├─────────────────────────┴────────────────────┴────────────────────┤
+│ total run duration: 12.4s                                         │
+├───────────────────────────────────────────────────────────────────┤
+│ total data received: 7.02kB (approx)                              │
+├───────────────────────────────────────────────────────────────────┤
+│ average response time: 272ms [min: 6ms, max: 1232ms, s.d.: 290ms] │
+└───────────────────────────────────────────────────────────────────┘
+
+[31m  # [39m[31m failure        [39m[31m detail                                                                              [39m
+[90m    [39m[90m                [39m[90m                                                                                     [39m
+ 1.  AssertionError  Status code is successful                                                           
+                     expected 500 to be one of [ 200, 201, 204, 404, 403, 409, 422 ]                     
+                     at assertion:0 in test-script                                                       
+                     inside "leads / Create Lead"                                                        
+[90m    [39m[90m                [39m[90m                                                                                     [39m
+ 2.  AssertionError  Response is valid JSON                                                              
+                     expected response body to be a valid json but got error Unexpected token 'I' at 1:1 
+                     at assertion:2 in test-script                                                       
+                     inside "leads / Create Lead"                                                        
+[90m    [39m[90m                [39m[90m                                                                                     [39m
+ 3.  Error                                                                                               
+                     read ECONNRESET                                                                     
+                     at request                                                                          
+                     inside ""                                                                           
+[90m    [39m[90m                [39m[90m                                                                                     [39m
+ 4.  AssertionError  Response time is less than 500ms                                                    
+                     expected 1008 to be below 500                                                       
+                     at assertion:1 in test-script                                                       
+                     inside "test-bad-async / Bad Async Endpoint"                                        
+[90m    [39m[90m                [39m[90m                                                                                     [39m
+ 5.  AssertionError  Response time is less than 500ms                                                    
+                     expected 1007 to be below 500                                                       
+                     at assertion:1 in test-script                                                       
+                     inside "test-good-async / Good Async Endpoint"                                      

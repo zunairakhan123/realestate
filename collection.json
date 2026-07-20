@@ -1,0 +1,2623 @@
+{
+  "info": {
+    "_postman_id": "a0478d6d-457d-418d-974f-b57fb57f361c",
+    "name": "Realty Service API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "33957855"
+  },
+  "item": [
+    {
+      "name": "auth",
+      "item": [
+        {
+          "name": "signup",
+          "item": [
+            {
+              "name": "Signup",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"zunaira@gmail.com\",\n  \"password\": \"1234\",\n  \"role\": \"agent\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/auth/signup",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "signup"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Successful Response",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"email\": \"aFAJN@McKfapTBHZFaKliOcjJqkvlhBELHh.pqg\",\n  \"password\": \"string\",\n  \"role\": \"agent\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/auth/signup",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "signup"
+                      ]
+                    }
+                  },
+                  "status": "Created",
+                  "code": 201,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"access_token\": \"string\",\n  \"user_id\": \"string\",\n  \"role\": \"string\",\n  \"token_type\": \"bearer\"\n}"
+                },
+                {
+                  "name": "Validation Error",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"email\": \"aFAJN@McKfapTBHZFaKliOcjJqkvlhBELHh.pqg\",\n  \"password\": \"string\",\n  \"role\": \"agent\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/auth/signup",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "signup"
+                      ]
+                    }
+                  },
+                  "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                  "code": 422,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        7731,\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": \"\",\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        5082,\n        4346\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": \"\",\n      \"ctx\": {}\n    }\n  ]\n}"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "login",
+          "item": [
+            {
+              "name": "Login",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"zunaira@gmail.com\",\n  \"password\": \"1234\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/auth/login",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "auth",
+                    "login"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Successful Response",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"email\": \"OzVP8ZiunE@GfRkkXkMCwfxnao.zxv\",\n  \"password\": \"string\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/auth/login",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "login"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"access_token\": \"string\",\n  \"user_id\": \"string\",\n  \"role\": \"string\",\n  \"token_type\": \"bearer\"\n}"
+                },
+                {
+                  "name": "Validation Error",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"email\": \"OzVP8ZiunE@GfRkkXkMCwfxnao.zxv\",\n  \"password\": \"string\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/auth/login",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "auth",
+                        "login"
+                      ]
+                    }
+                  },
+                  "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                  "code": 422,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        7731,\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": \"\",\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        5082,\n        4346\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": \"\",\n      \"ctx\": {}\n    }\n  ]\n}"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "customers",
+      "item": [
+        {
+          "name": "{id}",
+          "item": [
+            {
+              "name": "Get Customer",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/customers/:id",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "customers",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "ab90d276-fb63-d54d-f7d8-9f026cf46a60"
+                    }
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Successful Response",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/customers/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "customers",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id",
+                          "value": "ab90d276-fb63-d54d-f7d8-9f026cf46a60"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"name\": \"string\",\n  \"email\": \"IuaWhe4t0SiUDP@sCOjXkbEvhGykqKXZuY.gg\",\n  \"id\": \"c7f8b68c-3d8d-9b4a-a3ce-1a19a59f9044\",\n  \"created_at\": \"1980-04-17T05:18:16.131Z\",\n  \"updated_at\": \"1949-06-05T12:27:25.790Z\",\n  \"phone\": \"string\"\n}"
+                },
+                {
+                  "name": "Validation Error",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/customers/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "customers",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id",
+                          "value": "ab90d276-fb63-d54d-f7d8-9f026cf46a60"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                  "code": 422,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        7731,\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": \"\",\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        5082,\n        4346\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": \"\",\n      \"ctx\": {}\n    }\n  ]\n}"
+                }
+              ]
+            },
+            {
+              "name": "Update Customer",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": null,\n  \"email\": \"S4EiKM@HCW.ujhh\",\n  \"phone\": \"string\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/customers/:id",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "customers",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "ab90d276-fb63-d54d-f7d8-9f026cf46a60"
+                    }
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Successful Response",
+                  "originalRequest": {
+                    "method": "PATCH",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": null,\n  \"email\": \"S4EiKM@HCW.ujhh\",\n  \"phone\": \"string\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/customers/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "customers",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id",
+                          "value": "ab90d276-fb63-d54d-f7d8-9f026cf46a60"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"name\": \"string\",\n  \"email\": \"IuaWhe4t0SiUDP@sCOjXkbEvhGykqKXZuY.gg\",\n  \"id\": \"c7f8b68c-3d8d-9b4a-a3ce-1a19a59f9044\",\n  \"created_at\": \"1980-04-17T05:18:16.131Z\",\n  \"updated_at\": \"1949-06-05T12:27:25.790Z\",\n  \"phone\": \"string\"\n}"
+                },
+                {
+                  "name": "Validation Error",
+                  "originalRequest": {
+                    "method": "PATCH",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": null,\n  \"email\": \"S4EiKM@HCW.ujhh\",\n  \"phone\": \"string\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/customers/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "customers",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id",
+                          "value": "ab90d276-fb63-d54d-f7d8-9f026cf46a60"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                  "code": 422,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        7731,\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": \"\",\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        5082,\n        4346\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": \"\",\n      \"ctx\": {}\n    }\n  ]\n}"
+                }
+              ]
+            },
+            {
+              "name": "Delete Customer",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/customers/:id",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "customers",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "ab90d276-fb63-d54d-f7d8-9f026cf46a60"
+                    }
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Successful Response",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/customers/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "customers",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id",
+                          "value": "ab90d276-fb63-d54d-f7d8-9f026cf46a60"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "No Content",
+                  "code": 204,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "body": null
+                },
+                {
+                  "name": "Validation Error",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/customers/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "customers",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id",
+                          "value": "ab90d276-fb63-d54d-f7d8-9f026cf46a60"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                  "code": 422,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        7731,\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": \"\",\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        5082,\n        4346\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": \"\",\n      \"ctx\": {}\n    }\n  ]\n}"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Create Customer",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"string\",\n  \"email\": \"P7NVSAi7uLs@cdKDOiPYCGfpGYZBzcGqCTJQneuGc.wkjv\",\n  \"phone\": \"string\"\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/customers/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "customers",
+                ""
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Response",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"string\",\n  \"email\": \"P7NVSAi7uLs@cdKDOiPYCGfpGYZBzcGqCTJQneuGc.wkjv\",\n  \"phone\": \"string\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/customers/",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "customers",
+                    ""
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"name\": \"string\",\n  \"email\": \"IuaWhe4t0SiUDP@sCOjXkbEvhGykqKXZuY.gg\",\n  \"id\": \"c7f8b68c-3d8d-9b4a-a3ce-1a19a59f9044\",\n  \"created_at\": \"1980-04-17T05:18:16.131Z\",\n  \"updated_at\": \"1949-06-05T12:27:25.790Z\",\n  \"phone\": \"string\"\n}"
+            },
+            {
+              "name": "Validation Error",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"string\",\n  \"email\": \"P7NVSAi7uLs@cdKDOiPYCGfpGYZBzcGqCTJQneuGc.wkjv\",\n  \"phone\": \"string\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/customers/",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "customers",
+                    ""
+                  ]
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        7731,\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": \"\",\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        5082,\n        4346\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": \"\",\n      \"ctx\": {}\n    }\n  ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "List Customers",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/customers/?skip=0&limit=20&name=string&email=string&phone=string&created_after=2006-07-08T02:48:31.637Z&created_before=2006-07-08T02:48:31.637Z&has_active_leads=false",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "customers",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "skip",
+                  "value": "0"
+                },
+                {
+                  "key": "limit",
+                  "value": "20"
+                },
+                {
+                  "key": "name",
+                  "value": "string"
+                },
+                {
+                  "key": "email",
+                  "value": "string"
+                },
+                {
+                  "key": "phone",
+                  "value": "string"
+                },
+                {
+                  "key": "created_after",
+                  "value": "2006-07-08T02:48:31.637Z"
+                },
+                {
+                  "key": "created_before",
+                  "value": "2006-07-08T02:48:31.637Z"
+                },
+                {
+                  "key": "has_active_leads",
+                  "value": "false"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/customers/?skip=0&limit=20&name=string&email=string&phone=string&created_after=2006-07-08T02:48:31.637Z&created_before=2006-07-08T02:48:31.637Z&has_active_leads=false",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "customers",
+                    ""
+                  ],
+                  "query": [
+                    {
+                      "key": "skip",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "20"
+                    },
+                    {
+                      "key": "name",
+                      "value": "string"
+                    },
+                    {
+                      "key": "email",
+                      "value": "string"
+                    },
+                    {
+                      "key": "phone",
+                      "value": "string"
+                    },
+                    {
+                      "key": "created_after",
+                      "value": "2006-07-08T02:48:31.637Z"
+                    },
+                    {
+                      "key": "created_before",
+                      "value": "2006-07-08T02:48:31.637Z"
+                    },
+                    {
+                      "key": "has_active_leads",
+                      "value": "false"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"total\": 5895,\n  \"items\": [\n    {\n      \"name\": \"string\",\n      \"email\": \"uYy@FoYcK.paf\",\n      \"id\": \"17a5dcb9-4dfc-2829-10b9-125e560383b4\",\n      \"created_at\": \"2016-07-10T17:17:33.182Z\",\n      \"updated_at\": \"1954-08-11T22:04:45.956Z\",\n      \"phone\": null\n    },\n    {\n      \"name\": \"string\",\n      \"email\": \"RgJpjejU0HHaa@YvBMnpsbKVNIsvfOUruNNpKuPt.efk\",\n      \"id\": \"e997b9c3-0ae9-7873-f75b-84506748b39b\",\n      \"created_at\": \"1995-11-23T03:42:26.992Z\",\n      \"updated_at\": \"2022-05-13T17:48:28.250Z\",\n      \"phone\": null\n    }\n  ]\n}"
+            },
+            {
+              "name": "Validation Error",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/customers/?skip=0&limit=20&name=string&email=string&phone=string&created_after=2006-07-08T02:48:31.637Z&created_before=2006-07-08T02:48:31.637Z&has_active_leads=false",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "customers",
+                    ""
+                  ],
+                  "query": [
+                    {
+                      "key": "skip",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "20"
+                    },
+                    {
+                      "key": "name",
+                      "value": "string"
+                    },
+                    {
+                      "key": "email",
+                      "value": "string"
+                    },
+                    {
+                      "key": "phone",
+                      "value": "string"
+                    },
+                    {
+                      "key": "created_after",
+                      "value": "2006-07-08T02:48:31.637Z"
+                    },
+                    {
+                      "key": "created_before",
+                      "value": "2006-07-08T02:48:31.637Z"
+                    },
+                    {
+                      "key": "has_active_leads",
+                      "value": "false"
+                    }
+                  ]
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        7731,\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": \"\",\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        5082,\n        4346\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": \"\",\n      \"ctx\": {}\n    }\n  ]\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "properties",
+      "item": [
+        {
+          "name": "{id}",
+          "item": [
+            {
+              "name": "Get Property",
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/properties/:id",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "properties",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "a383eaf9-07a1-4172-b2b1-197afcf50716"
+                    }
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Successful Response",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/properties/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "properties",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id",
+                          "value": "ab90d276-fb63-d54d-f7d8-9f026cf46a60"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"address\": \"string\",\n  \"city\": \"string\",\n  \"price\": 7548.495556285179,\n  \"id\": \"0dbbbfff-f600-afc7-bd62-c00f1ee6856c\",\n  \"created_at\": \"1985-03-23T05:55:32.509Z\",\n  \"updated_at\": \"1983-03-30T01:23:03.611Z\",\n  \"bedrooms\": 0,\n  \"status\": \"under_contract\"\n}"
+                },
+                {
+                  "name": "Validation Error",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/properties/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "properties",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id",
+                          "value": "ab90d276-fb63-d54d-f7d8-9f026cf46a60"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                  "code": 422,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        7731,\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": \"\",\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        5082,\n        4346\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": \"\",\n      \"ctx\": {}\n    }\n  ]\n}"
+                }
+              ]
+            },
+            {
+              "name": "Update Property",
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"address\": \"string\",\n  \"city\": null,\n  \"price\": 5411.137826133511,\n  \"bedrooms\": 6838,\n  \"status\": \"sold\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/properties/:id",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "properties",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "ab90d276-fb63-d54d-f7d8-9f026cf46a60"
+                    }
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Successful Response",
+                  "originalRequest": {
+                    "method": "PATCH",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"address\": \"string\",\n  \"city\": null,\n  \"price\": 5411.137826133511,\n  \"bedrooms\": 6838,\n  \"status\": \"sold\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/properties/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "properties",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id",
+                          "value": "ab90d276-fb63-d54d-f7d8-9f026cf46a60"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"address\": \"string\",\n  \"city\": \"string\",\n  \"price\": 7548.495556285179,\n  \"id\": \"0dbbbfff-f600-afc7-bd62-c00f1ee6856c\",\n  \"created_at\": \"1985-03-23T05:55:32.509Z\",\n  \"updated_at\": \"1983-03-30T01:23:03.611Z\",\n  \"bedrooms\": 0,\n  \"status\": \"under_contract\"\n}"
+                },
+                {
+                  "name": "Validation Error",
+                  "originalRequest": {
+                    "method": "PATCH",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"address\": \"string\",\n  \"city\": null,\n  \"price\": 5411.137826133511,\n  \"bedrooms\": 6838,\n  \"status\": \"sold\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/properties/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "properties",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id",
+                          "value": "ab90d276-fb63-d54d-f7d8-9f026cf46a60"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                  "code": 422,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        7731,\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": \"\",\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        5082,\n        4346\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": \"\",\n      \"ctx\": {}\n    }\n  ]\n}"
+                }
+              ]
+            },
+            {
+              "name": "Delete Property",
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/properties/:id",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "properties",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "ab90d276-fb63-d54d-f7d8-9f026cf46a60"
+                    }
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Successful Response",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/properties/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "properties",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id",
+                          "value": "ab90d276-fb63-d54d-f7d8-9f026cf46a60"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "No Content",
+                  "code": 204,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "body": null
+                },
+                {
+                  "name": "Validation Error",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/properties/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "properties",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id",
+                          "value": "ab90d276-fb63-d54d-f7d8-9f026cf46a60"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                  "code": 422,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        7731,\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": \"\",\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        5082,\n        4346\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": \"\",\n      \"ctx\": {}\n    }\n  ]\n}"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Create Property",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"address\": \"string\",\n  \"city\": \"hjghjgjg\",\n  \"price\": 6302.503978619374,\n  \"bedrooms\": 0,\n  \"status\": \"available\"\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/properties/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "properties",
+                ""
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Response",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"address\": \"string\",\n  \"city\": \"string\",\n  \"price\": 6302.503978619374,\n  \"bedrooms\": 0,\n  \"status\": \"available\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/properties/",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "properties",
+                    ""
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"address\": \"string\",\n  \"city\": \"string\",\n  \"price\": 7548.495556285179,\n  \"id\": \"0dbbbfff-f600-afc7-bd62-c00f1ee6856c\",\n  \"created_at\": \"1985-03-23T05:55:32.509Z\",\n  \"updated_at\": \"1983-03-30T01:23:03.611Z\",\n  \"bedrooms\": 0,\n  \"status\": \"under_contract\"\n}"
+            },
+            {
+              "name": "Validation Error",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"address\": \"string\",\n  \"city\": \"string\",\n  \"price\": 6302.503978619374,\n  \"bedrooms\": 0,\n  \"status\": \"available\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/properties/",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "properties",
+                    ""
+                  ]
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        7731,\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": \"\",\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        5082,\n        4346\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": \"\",\n      \"ctx\": {}\n    }\n  ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "List Properties",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/properties/?skip=0&limit=20&city=string&status=available&min_price=1503.9137455690432&max_price=1503.9137455690432&min_bedrooms=2&exact_bedrooms=1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "properties",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "skip",
+                  "value": "0"
+                },
+                {
+                  "key": "limit",
+                  "value": "20"
+                },
+                {
+                  "key": "city",
+                  "value": "string"
+                },
+                {
+                  "key": "status",
+                  "value": "available"
+                },
+                {
+                  "key": "min_price",
+                  "value": "1503.9137455690432"
+                },
+                {
+                  "key": "max_price",
+                  "value": "1503.9137455690432"
+                },
+                {
+                  "key": "min_bedrooms",
+                  "value": "2"
+                },
+                {
+                  "key": "exact_bedrooms",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/properties/?skip=0&limit=20&city=string&status=available&min_price=1503.9137455690432&max_price=1503.9137455690432&min_bedrooms=2790&exact_bedrooms=2790",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "properties",
+                    ""
+                  ],
+                  "query": [
+                    {
+                      "key": "skip",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "20"
+                    },
+                    {
+                      "key": "city",
+                      "value": "string"
+                    },
+                    {
+                      "key": "status",
+                      "value": "available"
+                    },
+                    {
+                      "key": "min_price",
+                      "value": "1503.9137455690432"
+                    },
+                    {
+                      "key": "max_price",
+                      "value": "1503.9137455690432"
+                    },
+                    {
+                      "key": "min_bedrooms",
+                      "value": "2790"
+                    },
+                    {
+                      "key": "exact_bedrooms",
+                      "value": "2790"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"total\": 9020,\n  \"items\": [\n    {\n      \"address\": \"string\",\n      \"city\": \"string\",\n      \"price\": 1462.756486158281,\n      \"id\": \"30f3540b-618e-69fc-0216-f7f00131a95e\",\n      \"created_at\": \"1987-10-30T18:54:16.575Z\",\n      \"updated_at\": \"1984-08-21T23:19:42.033Z\",\n      \"bedrooms\": 0,\n      \"status\": \"available\"\n    },\n    {\n      \"address\": \"string\",\n      \"city\": \"string\",\n      \"price\": 2662.3206372675672,\n      \"id\": \"0c70a001-ae47-9d9c-0030-09d1cf60c385\",\n      \"created_at\": \"1978-11-13T07:55:11.370Z\",\n      \"updated_at\": \"2014-01-09T15:40:47.864Z\",\n      \"bedrooms\": 0,\n      \"status\": \"available\"\n    }\n  ]\n}"
+            },
+            {
+              "name": "Validation Error",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/properties/?skip=0&limit=20&city=string&status=available&min_price=1503.9137455690432&max_price=1503.9137455690432&min_bedrooms=2790&exact_bedrooms=2790",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "properties",
+                    ""
+                  ],
+                  "query": [
+                    {
+                      "key": "skip",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "20"
+                    },
+                    {
+                      "key": "city",
+                      "value": "string"
+                    },
+                    {
+                      "key": "status",
+                      "value": "available"
+                    },
+                    {
+                      "key": "min_price",
+                      "value": "1503.9137455690432"
+                    },
+                    {
+                      "key": "max_price",
+                      "value": "1503.9137455690432"
+                    },
+                    {
+                      "key": "min_bedrooms",
+                      "value": "2790"
+                    },
+                    {
+                      "key": "exact_bedrooms",
+                      "value": "2790"
+                    }
+                  ]
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        7731,\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": \"\",\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        5082,\n        4346\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": \"\",\n      \"ctx\": {}\n    }\n  ]\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "leads",
+      "item": [
+        {
+          "name": "{id}",
+          "item": [
+            {
+              "name": "Get Lead",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{bearerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/leads/:id",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "leads",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "ab90d276-fb63-d54d-f7d8-9f026cf46a60"
+                    }
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Successful Response",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/leads/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "leads",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id",
+                          "value": "ab90d276-fb63-d54d-f7d8-9f026cf46a60"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"customer_id\": \"dd230275-ef94-5a27-2d22-94b249878de1\",\n  \"property_id\": \"acadc555-a14e-5ec7-85bb-4a8387948d52\",\n  \"id\": \"99063187-74e5-37b6-3ac8-3211ba6f67fb\",\n  \"created_at\": \"1985-06-18T01:25:58.211Z\",\n  \"updated_at\": \"2001-07-05T06:32:47.252Z\",\n  \"customer\": {\n    \"name\": \"string\",\n    \"email\": \"VXGmMbLTl@QoOdLHjUkDhuuibsEnuibRug.igm\",\n    \"id\": \"ff18b55e-ac80-2fee-bd67-38127ca15561\",\n    \"created_at\": \"2012-05-18T12:30:47.039Z\",\n    \"updated_at\": \"2017-06-03T04:36:05.246Z\",\n    \"phone\": null\n  },\n  \"property\": {\n    \"address\": \"string\",\n    \"city\": \"string\",\n    \"price\": 8385.304827957914,\n    \"id\": \"71bea01d-3512-95a6-bd92-7572729c77fa\",\n    \"created_at\": \"2017-08-18T09:31:58.456Z\",\n    \"updated_at\": \"1986-09-29T16:56:46.465Z\",\n    \"bedrooms\": 0,\n    \"status\": \"under_contract\"\n  },\n  \"agent_id\": \"string\",\n  \"status\": \"new\",\n  \"notes\": null\n}"
+                },
+                {
+                  "name": "Validation Error",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/leads/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "leads",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id",
+                          "value": "ab90d276-fb63-d54d-f7d8-9f026cf46a60"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                  "code": 422,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        7731,\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": \"\",\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        5082,\n        4346\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": \"\",\n      \"ctx\": {}\n    }\n  ]\n}"
+                }
+              ]
+            },
+            {
+              "name": "Update Lead",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{auth_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"agent_id\": 1234,\n  \"status\": \"cancelled\",\n  \"notes\": \"string\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/leads/3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "leads",
+                    "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Successful Response",
+                  "originalRequest": {
+                    "method": "PATCH",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"agent_id\": null,\n  \"status\": \"cancelled\",\n  \"notes\": \"string\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/leads/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "leads",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id",
+                          "value": "ab90d276-fb63-d54d-f7d8-9f026cf46a60"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"customer_id\": \"420e58e5-c86c-d676-c9c8-226e96600352\",\n  \"property_id\": \"8a34272a-911b-af6e-8616-33901afc65e9\",\n  \"id\": \"8475dcf2-008a-92fb-3fa0-d8e68d298166\",\n  \"created_at\": \"1967-01-16T02:44:14.352Z\",\n  \"updated_at\": \"2002-09-27T10:30:18.837Z\",\n  \"agent_id\": null,\n  \"status\": \"won\",\n  \"notes\": null\n}"
+                },
+                {
+                  "name": "Validation Error",
+                  "originalRequest": {
+                    "method": "PATCH",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"agent_id\": null,\n  \"status\": \"cancelled\",\n  \"notes\": \"string\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/leads/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "leads",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id",
+                          "value": "ab90d276-fb63-d54d-f7d8-9f026cf46a60"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                  "code": 422,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        7731,\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": \"\",\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        5082,\n        4346\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": \"\",\n      \"ctx\": {}\n    }\n  ]\n}"
+                }
+              ]
+            },
+            {
+              "name": "Delete Lead",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{auth_token}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{base_url}}/leads/ab90d276-fb63-d54d-f7d8-9f026cf46a60",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "leads",
+                    "ab90d276-fb63-d54d-f7d8-9f026cf46a60"
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "name": "Successful Response",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/leads/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "leads",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id",
+                          "value": "ab90d276-fb63-d54d-f7d8-9f026cf46a60"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "No Content",
+                  "code": 204,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "body": null
+                },
+                {
+                  "name": "Validation Error",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/leads/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "leads",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id",
+                          "value": "ab90d276-fb63-d54d-f7d8-9f026cf46a60"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                  "code": 422,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        7731,\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": \"\",\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        5082,\n        4346\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": \"\",\n      \"ctx\": {}\n    }\n  ]\n}"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Create Lead",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_id\": \"3ab263b0-867a-5667-e602-28ee5ea5e222\",\n  \"property_id\": \"9c73faf6-450f-5918-6c58-27b345837bed\",\n  \"agent_id\": \"string\",\n  \"status\": \"cancelled\",\n  \"notes\": \"string\"\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/leads/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "leads",
+                ""
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Response",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"customer_id\": \"3ab263b0-867a-5667-e602-28ee5ea5e222\",\n  \"property_id\": \"9c73faf6-450f-5918-6c58-27b345837bed\",\n  \"agent_id\": \"string\",\n  \"status\": \"cancelled\",\n  \"notes\": \"string\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/leads/",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "leads",
+                    ""
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"customer_id\": \"420e58e5-c86c-d676-c9c8-226e96600352\",\n  \"property_id\": \"8a34272a-911b-af6e-8616-33901afc65e9\",\n  \"id\": \"8475dcf2-008a-92fb-3fa0-d8e68d298166\",\n  \"created_at\": \"1967-01-16T02:44:14.352Z\",\n  \"updated_at\": \"2002-09-27T10:30:18.837Z\",\n  \"agent_id\": null,\n  \"status\": \"won\",\n  \"notes\": null\n}"
+            },
+            {
+              "name": "Validation Error",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"customer_id\": \"3ab263b0-867a-5667-e602-28ee5ea5e222\",\n  \"property_id\": \"9c73faf6-450f-5918-6c58-27b345837bed\",\n  \"agent_id\": \"string\",\n  \"status\": \"cancelled\",\n  \"notes\": \"string\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/leads/",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "leads",
+                    ""
+                  ]
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        7731,\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": \"\",\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        5082,\n        4346\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": \"\",\n      \"ctx\": {}\n    }\n  ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "List Leads",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/leads/?skip=0&limit=20&status=cancelled&agent_id=string&customer_id=fc8767d8-2efa-bffa-8b1a-e928683000d5&property_id=fc8767d8-2efa-bffa-8b1a-e928683000d5&created_after=2006-07-08T02:48:31.637Z&is_closed=false",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "leads",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "skip",
+                  "value": "0"
+                },
+                {
+                  "key": "limit",
+                  "value": "20"
+                },
+                {
+                  "key": "status",
+                  "value": "cancelled"
+                },
+                {
+                  "key": "agent_id",
+                  "value": "string"
+                },
+                {
+                  "key": "customer_id",
+                  "value": "fc8767d8-2efa-bffa-8b1a-e928683000d5"
+                },
+                {
+                  "key": "property_id",
+                  "value": "fc8767d8-2efa-bffa-8b1a-e928683000d5"
+                },
+                {
+                  "key": "created_after",
+                  "value": "2006-07-08T02:48:31.637Z"
+                },
+                {
+                  "key": "is_closed",
+                  "value": "false"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Successful Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/leads/?skip=0&limit=20&status=cancelled&agent_id=string&customer_id=fc8767d8-2efa-bffa-8b1a-e928683000d5&property_id=fc8767d8-2efa-bffa-8b1a-e928683000d5&created_after=2006-07-08T02:48:31.637Z&is_closed=false",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "leads",
+                    ""
+                  ],
+                  "query": [
+                    {
+                      "key": "skip",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "20"
+                    },
+                    {
+                      "key": "status",
+                      "value": "cancelled"
+                    },
+                    {
+                      "key": "agent_id",
+                      "value": "string"
+                    },
+                    {
+                      "key": "customer_id",
+                      "value": "fc8767d8-2efa-bffa-8b1a-e928683000d5"
+                    },
+                    {
+                      "key": "property_id",
+                      "value": "fc8767d8-2efa-bffa-8b1a-e928683000d5"
+                    },
+                    {
+                      "key": "created_after",
+                      "value": "2006-07-08T02:48:31.637Z"
+                    },
+                    {
+                      "key": "is_closed",
+                      "value": "false"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"total\": 4546,\n  \"items\": [\n    {\n      \"customer_id\": \"04fbb3ad-5b6d-b6ba-3656-458d3aeaa6fd\",\n      \"property_id\": \"405b58a6-b305-2110-dd66-5cbbe8bbcd90\",\n      \"id\": \"137db3df-5d7e-20b3-797a-72a044853c65\",\n      \"created_at\": \"2016-07-10T19:45:04.633Z\",\n      \"updated_at\": \"2008-12-14T02:04:10.660Z\",\n      \"agent_id\": null,\n      \"status\": \"lost\",\n      \"notes\": \"string\"\n    },\n    {\n      \"customer_id\": \"4809614c-e084-ed8d-b827-7d06d83f21eb\",\n      \"property_id\": \"871d5f8b-59de-55be-9363-81979e9a5759\",\n      \"id\": \"5949ea6e-6629-02e0-87c9-79ccd53cf499\",\n      \"created_at\": \"1955-07-08T21:42:58.286Z\",\n      \"updated_at\": \"1999-12-11T12:01:58.437Z\",\n      \"agent_id\": null,\n      \"status\": \"viewing\",\n      \"notes\": null\n    }\n  ]\n}"
+            },
+            {
+              "name": "Validation Error",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/leads/?skip=0&limit=20&status=cancelled&agent_id=string&customer_id=fc8767d8-2efa-bffa-8b1a-e928683000d5&property_id=fc8767d8-2efa-bffa-8b1a-e928683000d5&created_after=2006-07-08T02:48:31.637Z&is_closed=false",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "leads",
+                    ""
+                  ],
+                  "query": [
+                    {
+                      "key": "skip",
+                      "value": "0"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "20"
+                    },
+                    {
+                      "key": "status",
+                      "value": "cancelled"
+                    },
+                    {
+                      "key": "agent_id",
+                      "value": "string"
+                    },
+                    {
+                      "key": "customer_id",
+                      "value": "fc8767d8-2efa-bffa-8b1a-e928683000d5"
+                    },
+                    {
+                      "key": "property_id",
+                      "value": "fc8767d8-2efa-bffa-8b1a-e928683000d5"
+                    },
+                    {
+                      "key": "created_after",
+                      "value": "2006-07-08T02:48:31.637Z"
+                    },
+                    {
+                      "key": "is_closed",
+                      "value": "false"
+                    }
+                  ]
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        7731,\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": \"\",\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        5082,\n        4346\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": \"\",\n      \"ctx\": {}\n    }\n  ]\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "test-bad-async",
+      "item": [
+        {
+          "name": "Bad Async Endpoint",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/test-bad-async",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "test-bad-async"
+              ]
+            },
+            "description": "INCORRECT: A synchronous blocking call inside an async def.\nThis freezes the single-threaded event loop. No other requests can be processed."
+          },
+          "response": [
+            {
+              "name": "Successful Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/test-bad-async",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "test-bad-async"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "test-good-async",
+      "item": [
+        {
+          "name": "Good Async Endpoint",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/test-good-async",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "test-good-async"
+              ]
+            },
+            "description": "CORRECT: Yields control back to the event loop.\nWhile waiting for this 1-second task to finish, the server handles other requests."
+          },
+          "response": [
+            {
+              "name": "Successful Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/test-good-async",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "test-good-async"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "body": ""
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{auth_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          "// Define the test user credentials\r",
+          "const authData = {\r",
+          "    email: \"postman_test_agent@realty.com\",\r",
+          "    password: \"securepassword\",\r",
+          "    role: \"agent\"\r",
+          "};\r",
+          "\r",
+          "// Attempt to login (in case the user already exists)\r",
+          "pm.sendRequest({\r",
+          "    url: pm.environment.get(\"base_url\") + '/auth/login',\r",
+          "    method: 'POST',\r",
+          "    header: 'Content-Type: application/json',\r",
+          "    body: {\r",
+          "        mode: 'raw',\r",
+          "        raw: JSON.stringify({ email: authData.email, password: authData.password })\r",
+          "    }\r",
+          "}, function (err, res) {\r",
+          "    if (res.code === 200) {\r",
+          "        // Login successful, save the token\r",
+          "        pm.environment.set(\"auth_token\", res.json().access_token);\r",
+          "    } else {\r",
+          "        // Login failed (likely doesn't exist), so signup first\r",
+          "        pm.sendRequest({\r",
+          "            url: pm.environment.get(\"base_url\") + '/auth/signup',\r",
+          "            method: 'POST',\r",
+          "            header: 'Content-Type: application/json',\r",
+          "            body: {\r",
+          "                mode: 'raw',\r",
+          "                raw: JSON.stringify(authData)\r",
+          "            }\r",
+          "        }, function (err2, res2) {\r",
+          "            if (res2.code === 201) {\r",
+          "                pm.environment.set(\"auth_token\", res2.json().access_token);\r",
+          "            } else {\r",
+          "                console.log(\"Failed to acquire token:\", res2.json());\r",
+          "            }\r",
+          "        });\r",
+          "    }\r",
+          "});"
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          "// 1. Assert Status Code (Assuming 200, 201, or 204 for successful paths)\r",
+          "pm.test(\"Status code is successful\", function () {\r",
+          "    pm.expect(pm.response.code).to.be.oneOf([200, 201, 204, 404, 403, 409, 422]);\r",
+          "});\r",
+          "\r",
+          "// 2. Assert Response Time\r",
+          "pm.test(\"Response time is less than 500ms\", function () {\r",
+          "    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+          "});\r",
+          "\r",
+          "// 3. Assert Response Shape (Basic JSON check)\r",
+          "pm.test(\"Response is valid JSON\", function () {\r",
+          "    if (pm.response.code !== 204) { // 204 No Content has no body\r",
+          "        pm.response.to.be.json;\r",
+          "    }\r",
+          "});"
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "/"
+    }
+  ]
+}

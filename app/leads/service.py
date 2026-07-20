@@ -4,8 +4,10 @@ from sqlalchemy import select, func
 from sqlalchemy.orm import selectinload
 from app.leads.models import Lead, LeadStatus  # Ensure LeadStatus is imported
 from app.leads.schemas import LeadCreate, LeadUpdate
-from app.core.exceptions import NotFoundError
+from app.core.exceptions import ConflictError, NotFoundError
 from app.core.events import event_bus
+from app.core.websockets import manager
+
 async def create_lead(db: AsyncSession, data: LeadCreate) -> Lead:
     lead = Lead(**data.model_dump())
     db.add(lead)
@@ -47,20 +49,22 @@ async def get_lead_detail(db: AsyncSession, lead_id: UUID) -> Lead:
     return lead
 
 async def update_lead(db: AsyncSession, lead_id: UUID, data: LeadUpdate) -> Lead:
-    # 1. Fetch the lead (This handles the 404 check automatically!)
+    # 1. Fetch the lead (This handles the 404 check automatically)
     lead = await get_lead_detail(db, lead_id)
     
-    # 2. Apply updates
+    # 2. BUSINESS RULE: Check original state BEFORE applying updates
+    terminal_states = ["won", "lost", "cancelled"]
+    if lead.status.value in terminal_states and data.status and data.status.value not in terminal_states:
+        raise ConflictError(f"Cannot move a closed lead ({lead.status.value}) back to an active state.")
+    
+    # 3. Apply updates safely
     for key, value in data.model_dump(exclude_unset=True).items():
         setattr(lead, key, value)
         
     await db.commit()
     await db.refresh(lead)
     
-    # 3. Check for terminal status
-    # Note: Make sure these exactly match your LeadStatus enum values
-    terminal_states = ["won", "lost", "cancelled"] 
-    
+    # 4. EVENT BUS: Emit notification if newly moved to a terminal status
     if data.status and data.status.value in terminal_states:
         payload = {
             "id": str(lead.id),
@@ -68,8 +72,19 @@ async def update_lead(db: AsyncSession, lead_id: UUID, data: LeadUpdate) -> Lead
             "agent_id": str(lead.agent_id)
         }
         event_bus.emit("lead_terminal_status", payload)
-
+    # FIRE THE WEBSOCKET BROADCAST
+    if data.status:
+        await manager.broadcast_lead_update(
+            str(lead.id), 
+            {
+                "event": "status_changed", 
+                "lead_id": str(lead.id), 
+                "new_status": lead.status.value
+            }
+        )
+        
     return lead
+
 
 async def delete_lead(db: AsyncSession, lead_id: UUID):
     lead = await db.scalar(select(Lead).where(Lead.id == lead_id))

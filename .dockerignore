@@ -1,0 +1,37 @@
+# .dockerignore
+
+# Git folder (don't copy the entire history)
+.git
+.gitignore
+
+# Environment files (NEVER copy your .env secrets)
+.env
+.env.local
+
+# Python artifacts
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Local environments (don't copy your host machine's venv)
+env/
+venv/
+.venv/
+.env/
+
+# IDE files
+.vscode/
+.idea/
+
+# Testing and log files
+.pytest_cache/
+.coverage
+htmlcov/
+*.log
+
+# Project-specific local data
+tools/
+locustfile.py
+test_ws.py
+*.md
