@@ -60,6 +60,7 @@ The Realty Service API is a backend service designed to power real estate platfo
 
 ---
 ## 📂 Project Structure
+```
 realty/
 ├── app/
 │   ├── main.py                  # FastAPI application entrypoint
@@ -97,7 +98,7 @@ realty/
 ├── requirements.txt
 ├── .env.example
 └── README.md
-
+```
 > Adjust this tree to match your actual repository layout as the project evolves.
 
 ---
