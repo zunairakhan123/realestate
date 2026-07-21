@@ -147,21 +147,21 @@ app.include_router(webhook_router)   #auto-generated Swagger UI (/docs) will gro
 
 # --- Async Proof Endpoints ---
 
-@app.get("/test-bad-async", tags=["Async Proof"])
-async def bad_async_endpoint():
-    """
-    INCORRECT: A synchronous blocking call inside an async def.
-    This freezes the single-threaded event loop. No other requests can be processed.
-    """
-    time.sleep(1) # Simulating a 1-second blocking task
-    return {"status": "done", "type": "bad"}
+# @app.get("/test-bad-async", tags=["Async Proof"])
+# async def bad_async_endpoint():
+#     """
+#     INCORRECT: A synchronous blocking call inside an async def.
+#     This freezes the single-threaded event loop. No other requests can be processed.
+#     """
+#     time.sleep(1) # Simulating a 1-second blocking task
+#     return {"status": "done", "type": "bad"}
 
 
-@app.get("/test-good-async", tags=["Async Proof"])
-async def good_async_endpoint():
-    """
-    CORRECT: Yields control back to the event loop.
-    While waiting for this 1-second task to finish, the server handles other requests.
-    """
-    await asyncio.sleep(1) # Simulating a 1-second async I/O task
-    return {"status": "done", "type": "good"}
+# @app.get("/test-good-async", tags=["Async Proof"])
+# async def good_async_endpoint():
+#     """
+#     CORRECT: Yields control back to the event loop.
+#     While waiting for this 1-second task to finish, the server handles other requests.
+#     """
+#     await asyncio.sleep(1) # Simulating a 1-second async I/O task
+#     return {"status": "done", "type": "good"}

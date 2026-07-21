@@ -71,3 +71,23 @@ async def verify_lead_access(
         return user
 
     raise PermissionDeniedError("Invalid role specified.")
+
+async def verify_property_access(
+    request: Request,
+    user: CurrentUser = Depends(get_current_user)
+):
+    # Admins can perform any action
+    if user.role == "admin":
+        return user
+
+    # Restrict customers to read-only methods
+    if user.role == "customer":
+        if request.method not in ["GET", "HEAD", "OPTIONS"]:
+            raise PermissionDeniedError("Customers have read-only access and cannot modify or delete properties.")
+        return user
+
+    # Allow agents to modify properties (add specific ownership checks here later if needed)
+    if user.role == "agent":
+        return user
+
+    raise PermissionDeniedError("Invalid role specified.")

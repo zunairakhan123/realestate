@@ -21,8 +21,8 @@ async def create_lead(data: schemas.LeadCreate, db: AsyncSession = Depends(get_d
     return await service.create_lead(db, data)
 
 
-# Removed the dependency here! This is a public/filtered list.
-@router.get("/", response_model=schemas.LeadList)
+
+@router.get("/", response_model=schemas.LeadList, dependencies=[Depends(write_limiter)])
 async def list_leads(
     skip: int = Query(0, ge=0), limit: int = Query(20, ge=1, le=100),
     status: Optional[LeadStatus] = None, agent_id: Optional[str] = None,
@@ -40,7 +40,7 @@ async def list_leads(
 
 
 # Security Gate applied! No try/except block needed.
-@router.get("/{id}", response_model=schemas.LeadDetailOut, dependencies=[Depends(verify_lead_access)])
+@router.get("/{id}", response_model=schemas.LeadDetailOut, dependencies=[Depends(verify_lead_access), Depends(write_limiter)])
 async def get_lead(id: UUID, db: AsyncSession = Depends(get_db)):
     return await service.get_lead_detail(db, id)
 
