@@ -14,7 +14,7 @@ from app.leads.router import router as leads_router
 # Core & Middleware
 from app.core.middleware import RequestLoggingMiddleware
 from app.core.events import event_bus
-from app.notifications.listeners import handle_terminal_lead
+from app.notifications.listeners import handle_lead_status_change, handle_terminal_lead
 
 from app.webhooks.router import router as webhook_router  # 1. Import the router
 
@@ -32,11 +32,13 @@ from app.db.session import get_db  # Updated import path
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import text
 from fastapi import Depends, HTTPException
+from app.copilot.router import router as copilot_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Subscribe the listener to the event on startup
     event_bus.subscribe("lead_terminal_status", handle_terminal_lead)
+    event_bus.subscribe("lead_status_changed", handle_lead_status_change)
     yield
 
 
@@ -144,6 +146,7 @@ app.include_router(customers_router)
 app.include_router(properties_router)
 app.include_router(leads_router)
 app.include_router(webhook_router)   #auto-generated Swagger UI (/docs) will group all webhook-related endpoints under a single, easy-to-read section.
+app.include_router(copilot_router)
 
 # --- Async Proof Endpoints ---
 

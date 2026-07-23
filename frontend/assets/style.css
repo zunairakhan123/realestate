@@ -1,0 +1,37 @@
+/* ==========================================================================
+   RealtyCRM Streamlit Custom Theme & Styling
+   ========================================================================== */
+
+/* Main container tweaks */
+.block-container {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+/* Dashboard Cards */
+div.stMarkdown {
+    font-family: 'Inter', sans-serif;
+}
+
+/* Custom Buttons */
+.stButton button {
+    border-radius: 6px;
+    font-weight: 500;
+    transition: all 0.2s ease-in-out;
+}
+
+.stButton button:hover {
+    border-color: #ff4b4b;
+    color: #ff4b4b;
+}
+
+/* Chat container polish */
+[data-testid="stChatInput"] {
+    border-radius: 8px;
+}
+
+/* Sidebar styling */
+[data-testid="stSidebar"] {
+    background-color: #0e1117;
+    border-right: 1px solid #262730;
+}

@@ -1,39 +1,52 @@
-#  Realty Service API
+# Realty Service & AI Copilot Platform
 
-A high-performance, asynchronous, event-driven REST API built with **FastAPI** and **PostgreSQL** for managing real estate operations — customers, properties, and leads — with a focus on decoupling, security, and scalability.
+A high-performance, asynchronous real estate operations platform built with a **FastAPI** backend, **PostgreSQL** database, **Streamlit** multi-role frontend, and an integrated **Agentic AI Copilot**. The system features role-based access control (RBAC), secure client-server communication, real-time lead tracking, and autonomous tool execution via LLMs.
 
 ![Python](https://img.shields.io/badge/Python-3.11%2B-blue?logo=python&logoColor=white)
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.110%2B-009688?logo=fastapi&logoColor=white)
+![Streamlit](https://img.shields.io/badge/Streamlit-1.32%2B-FF4B4B?logo=streamlit&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15%2B-336791?logo=postgresql&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-lightgrey)
 
 ---
 
-##  Table of Contents
+## 📋 Table of Contents
 
-- [Overview](#-overview)
+- [Overview](#overview)
+- [Key Features](#key-features)
 - [Technology Stack](#-technology-stack)
-- [Architectural Decisions](#-architectural-decisions)
+- [AI Copilot Architecture](#ai-copilot-architecture)
 - [Project Structure](#-project-structure)
-- [Getting Started](#-getting-started)
+- [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
-  - [Local Setup](#local-setup--installation)
+  - [Local Setup & Installation](#local-setup--installation)
   - [Configuration](#configuration)
   - [Database Migrations](#database-migrations)
   - [Running the Application](#running-the-application)
-- [Testing & Load Testing](#-testing--load-testing)
-- [Operational & DevOps](#-operational--devops)
-- [API Health & Verification](#-api-health--verification)
+- [Frontend Dashboards](#-frontend-dashboards)
+- [Testing & Load Testing](#testing--load-testing)
+- [Operational & DevOps](#️-operational--devops)
+- [API Health & Verification](#api-health--verification)
 - [Production Readiness Roadmap](#-production-readiness-roadmap)
-- [Contributing](#-contributing)
+- [Contributing](#contributing)
 - [License](#-license)
 
 ---
 
 ## Overview
 
-The Realty Service API is a backend service designed to power real estate platforms. It handles the full lifecycle of **leads**, **properties**, and **customers**, exposing a clean REST interface alongside real-time WebSocket notifications for state changes. The system is built to be modular, testable, and container-ready for cloud deployment.
+The Realty Service platform provides a complete ecosystem for managing real estate properties, customer inquiries, and agent workflows. Alongside traditional REST operations, it incorporates an **AI Copilot assistant** capable of securely executing backend actions (such as fetching listings, updating lead statuses, and inspecting profiles) via a strictly controlled tool-dispatch framework.
+
+---
+
+## Key Features
+
+- **Multi-Role Frontend (Streamlit)** — Dedicated dashboards for **Customers**, **Agents**, and **Admins** featuring responsive card-based layouts and data visualization.
+- **Agentic AI Copilot** — Integrated LLM assistant that adheres to enterprise guardrails (never talks directly to the database; routes all actions through the service layer and RBAC checks).
+- **Secure Authentication & RBAC** — JWT-based stateless authentication with strict role enforcement (`Customer`, `Agent`, `Admin`) and secure backend agent provisioning.
+- **Domain-Driven Backend (FastAPI)** — Modular domain design separating concerns across `leads`, `properties`, `customers`, `auth`, and `copilot`.
+- **Asynchronous Operations** — SQLAlchemy 2.0 with `asyncpg` for non-blocking database queries and high-concurrency throughput.
 
 ---
 
@@ -41,65 +54,71 @@ The Realty Service API is a backend service designed to power real estate platfo
 
 | Category | Technology |
 |---|---|
-| **Framework** | FastAPI, Uvicorn (ASGI), Gunicorn |
+| **Backend Framework** | FastAPI, Uvicorn (ASGI) |
+| **Frontend Framework** | Streamlit |
 | **Database & ORM** | PostgreSQL, SQLAlchemy 2.0 (`asyncpg` driver) |
 | **Migrations** | Alembic (async) |
-| **Real-time** | WebSockets (Connection Manager pattern) |
-| **Testing** | Pytest, Postman / Newman, Locust |
+| **AI / LLM Integration** | Pydantic v2, Custom Tool Dispatch Registry, Ollama / LLM Backend |
+| **Testing & Load Testing** | Pytest, Locust, Newman (Postman) |
 | **Infrastructure** | Docker, Docker Compose, Cloudflare Tunnel |
 
 ---
 
-## Architectural Decisions
+## AI Copilot Architecture
 
-- **Domain-Driven Structure** — Codebase is organized by business domain (`leads`, `properties`, `customers`) to ensure module isolation and simplified maintenance.
-- **Decoupled Service Layer** — Business logic lives in `service.py`, separated from HTTP concerns, allowing execution via background tasks or CLI.
-- **Event-Driven Real-time** — A centralized `ConnectionManager` pushes WebSocket notifications on state changes (e.g., status updates).
-- **Security** — HMAC-SHA256 signature verification for inbound webhooks; containers run as non-root.
-- **Resiliency** — Implements the **Accept-Now / Callback-Later** pattern to bypass gateway timeout limits for long-running AI processing tasks.
+The AI Copilot operates under a strict isolation guarantee. The LLM never communicates directly with the database. Instead, requests follow a secure governance pipeline:
+
+```text
+LLM (Intent & Arguments)
+    ↓
+Tool Dispatch Registry & Pydantic Validation (tools.py)
+    ↓
+Service Layer (service.py) — enforces business rules & RBAC
+    ↓
+Database (PostgreSQL)
+```
+
+### Supported Copilot Capabilities
+
+| Tool | Description |
+|---|---|
+| `list_properties` | Browse and filter real estate inventory by city. |
+| `update_lead_status` | Safely update CRM lead lifecycle statuses with fallback ID resolution and parameter normalization. |
+| `get_user_leads` | Retrieve role-filtered lead lists depending on whether the actor is an Agent, Customer, or Admin. |
+| `get_customer` | Retrieve customer details securely. |
 
 ---
+
 ## 📂 Project Structure
+
 ```
-realty/
+realty_service/
 ├── app/
 │   ├── main.py                  # FastAPI application entrypoint
-│   ├── core/                    # Config, security, connection manager
-│   ├── auth/                    # Authentication & authorization logic
-│   ├── notifications/           # WebSocket / notification dispatch
-│   ├── webhooks/                # Inbound webhook handlers (HMAC verification)
-│   ├── domains/
-│   │   ├── leads/
-│   │   │   ├── router.py
-│   │   │   ├── service.py
-│   │   │   ├── models.py
-│   │   │   └── schemas.py
-│   │   ├── properties/
-│   │   │   ├── router.py
-│   │   │   ├── service.py
-│   │   │   ├── models.py
-│   │   │   └── schemas.py
-│   │   └── customers/
-│   │       ├── router.py
-│   │       ├── service.py
-│   │       ├── models.py
-│   │       └── schemas.py
-│   └── db/
-│       ├── session.py
-│       └── base.py
-├── alembic/
-│   ├── versions/
-│   └── env.py
-├── tests/
-│   ├── locustfile.py
-│   └── ...
+│   ├── core/                    # Config, security, exception handlers
+│   ├── auth/                    # Authentication, schemas, and models
+│   ├── db/                      # Database session and base configuration
+│   ├── properties/              # Property domain (router, service, models)
+│   ├── leads/                   # Lead management domain
+│   ├── customers/               # Customer domain
+│   └── copilot/                 # AI Copilot service, tools registry, and execution engine
+├── frontend/
+│   ├── app.py                   # Main Streamlit router/entrypoint
+│   ├── api_client.py            # HTTP communication wrapper with JWT attachment
+│   ├── config.py                # Frontend configuration constants
+│   ├── views/
+│   │   ├── admin.py             # Admin Control Center (Analytics, Properties, Agent Provisioning)
+│   │   ├── agent.py             # Agent Dashboard (Assigned Leads management)
+│   │   └── customer.py          # Customer Portal (Property browser, Lead interest registry)
+│   └── components/
+│       └── copilot_ui.py        # Embedded Streamlit chat interface for the AI Copilot
+├── alembic/                     # Database migrations
+├── tests/                       # Pytest and Locust load testing scripts
 ├── docker-compose.yml
 ├── Dockerfile
 ├── requirements.txt
-├── .env.example
 └── README.md
 ```
-> Adjust this tree to match your actual repository layout as the project evolves.
 
 ---
 
@@ -113,7 +132,14 @@ realty/
 
 ### Local Setup & Installation
 
-**1. Create and activate a virtual environment**
+**1. Clone and enter the repository**
+
+```bash
+git clone <repository-url>
+cd realty_service
+```
+
+**2. Create and activate a virtual environment**
 
 ```bash
 python -m venv env
@@ -125,7 +151,7 @@ env\Scripts\activate
 source env/bin/activate
 ```
 
-**2. Install dependencies**
+**3. Install dependencies**
 
 ```bash
 pip install -r requirements.txt
@@ -136,18 +162,20 @@ pip install -r requirements.txt
 Create a `.env` file in the project root:
 
 ```env
-DATABASE_URL=postgresql+asyncpg://user:password@db:5432/db_name
+DATABASE_URL=postgresql+asyncpg://postgres:yourpassword@localhost:5432/realty_db
+SECRET_KEY=your_super_secret_jwt_key
 ```
 
 | Variable | Description | Example |
 |---|---|---|
-| `DATABASE_URL` | Async PostgreSQL connection string | `postgresql+asyncpg://user:password@db:5432/db_name` |
+| `DATABASE_URL` | Async PostgreSQL connection string | `postgresql+asyncpg://postgres:yourpassword@localhost:5432/realty_db` |
+| `SECRET_KEY` | Secret used to sign and verify JWTs | `your_super_secret_jwt_key` |
 
-> Never commit `.env` files to version control. Use `.env.example` as a template for collaborators.
+> Never commit `.env` files to version control. Use a `.env.example` template for collaborators, and rotate `SECRET_KEY` before any production deployment.
 
 ### Database Migrations
 
-Apply schema migrations:
+Apply asynchronous schema migrations:
 
 ```bash
 python -m alembic upgrade head
@@ -155,14 +183,33 @@ python -m alembic upgrade head
 
 ### Running the Application
 
+**1. Start the FastAPI backend:**
+
 ```bash
-python -m uvicorn app.main:app --reload
+python -m uvicorn app.main:app --reload --port 8000
 ```
 
-The API will be available at `http://localhost:8000`. Interactive docs are auto-generated by FastAPI at:
+**2. Start the Streamlit frontend** (in a separate terminal window):
 
-- Swagger UI: `http://localhost:8000/docs`
-- ReDoc: `http://localhost:8000/redoc`
+```bash
+streamlit run frontend/app.py
+```
+
+The application interfaces will be available at:
+
+| Interface | URL |
+|---|---|
+| Frontend UI | `http://localhost:8501` |
+| FastAPI Docs (Swagger) | `http://localhost:8000/docs` |
+| FastAPI Docs (ReDoc) | `http://localhost:8000/redoc` |
+
+---
+
+## 🎨 Frontend Dashboards
+
+- **Customer Dashboard** — Browse available properties with city filters, view rich property cards, register interest to create leads, track personal lead statuses, and interact with the AI assistant.
+- **Agent Dashboard** — Inspect assigned leads organized in card grids with status color-coding and run copilot queries.
+- **Admin Control Center** — Access system-wide analytics, inspect the entire real estate portfolio and system lead overview, provision secure agent accounts via form interfaces, and utilize a privileged global AI Copilot.
 
 ---
 
@@ -178,7 +225,7 @@ pytest tests/
 
 ### 2. API Contract Tests (Newman / Postman)
 
-Ensure your Postman collection and environment is exported as `collection.json`, `environment.json` then run:
+Ensure your Postman collection and environment are exported as `collection.json` and `environment.json`, then run:
 
 ```bash
 newman run collection.json -e environment.json --env-var "baseUrl=http://localhost:8000" > newman_evidence.txt
@@ -243,6 +290,7 @@ The following areas are identified for refinement before a full production deplo
 | **Task Queues** | FastAPI `BackgroundTasks` | Distributed queue (Celery or ARQ with Redis) for persistent, retryable tasks |
 | **Rate Limiting** | Not implemented | `slowapi` to protect against brute force / DDoS |
 | **Schema Versioning** | Manual `alembic upgrade` | Automate migrations within CI/CD pipeline |
+| **LLM Backend** | Local (Ollama) | Evaluate hosted/production-grade LLM provider with SLA guarantees |
 
 ---
 
@@ -264,4 +312,4 @@ This project is licensed under the [MIT License](LICENSE) — feel free to use, 
 
 ---
 
-<p align="center"><sub>Built with FastAPI, PostgreSQL, and a domain-driven mindset.</sub></p>
+<p align="center"><sub>Built with FastAPI, PostgreSQL, Streamlit, and a domain-driven, agentic mindset.</sub></p>

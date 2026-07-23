@@ -1,60 +1,45 @@
 import uuid
+import enum
 from datetime import datetime
-from sqlalchemy import String, DateTime, func
+from sqlalchemy import String, DateTime, func, ForeignKey, Enum as SQLEnum
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.dialects.postgresql import UUID
 from app.db.base import Base
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
 
-# Import only for type checking to avoid circular imports at runtime.
 if TYPE_CHECKING:
     from app.leads.models import Lead
+    from app.auth.models import User
 
+class PaymentMethod(str, enum.Enum):
+    CASH = "Cash"
+    CHEQUE = "Cheque"
 
-# Represents a customer in the database.
 class Customer(Base):
     __tablename__ = "customers"
 
-    # Primary key generated as a UUID to ensure global uniqueness.
     id: Mapped[uuid.UUID] = mapped_column(
         UUID(as_uuid=True),
         primary_key=True,
         default=uuid.uuid4
     )
 
-    # Customer's full name.
-    name: Mapped[str] = mapped_column(String, nullable=False)
-
-    # Unique email address used to identify a customer.
-    email: Mapped[str] = mapped_column(
-        String,
+    # Foreign key referencing UUID-based user primary key
+    user_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True),
+        ForeignKey("users.id", ondelete="CASCADE"),
         unique=True,
         nullable=False
     )
 
-    # Optional contact number.
-    phone: Mapped[str | None] = mapped_column(
-        String,
-        nullable=True
-    )
+    name: Mapped[str] = mapped_column(String, nullable=False)
+    email: Mapped[str] = mapped_column(String, unique=True, index=True, nullable=False)
+    phone: Mapped[Optional[str]] = mapped_column(String, nullable=True)
+    payment: Mapped[PaymentMethod] = mapped_column(SQLEnum(PaymentMethod), nullable=False, default=PaymentMethod.CASH)
+    notification_preferences: Mapped[Optional[str]] = mapped_column(String, nullable=True, default="email")
 
-    # Timestamp automatically set when the record is created.
-    created_at: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True),
-        server_default=func.now()
-    )
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
 
-    # Timestamp automatically updated whenever the record is modified.
-    updated_at: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True),
-        server_default=func.now(),
-        onupdate=func.now()
-    )
-
-    # One customer can have multiple leads.
-    # passive_deletes="all" lets PostgreSQL enforce delete rules directly.
-    leads: Mapped[list["Lead"]] = relationship(
-        "Lead",
-        back_populates="customer",
-        passive_deletes="all"
-    )
+    user: Mapped["User"] = relationship("User", backref="customer", uselist=False)
+    leads: Mapped[list["Lead"]] = relationship("Lead", back_populates="customer", passive_deletes="all")

@@ -7,9 +7,9 @@ from app.customers.schemas import CustomerOut
 from app.properties.schemas import PropertyOut
 
 class LeadBase(BaseModel):
-    customer_id: UUID
+    customer_id: Optional[UUID] = None  # <-- Make optional so the backend can set it automatically    
     property_id: UUID
-    agent_id: Optional[str] = None
+    agent_id: Optional[UUID] = None
     status: LeadStatus = LeadStatus.new
     notes: Optional[str] = None
 
@@ -17,7 +17,7 @@ class LeadCreate(LeadBase):
     pass
 
 class LeadUpdate(BaseModel):
-    agent_id: Optional[str] = None
+    agent_id: Optional[UUID] = None
     status: Optional[LeadStatus] = None
     notes: Optional[str] = None
 

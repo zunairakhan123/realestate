@@ -6,32 +6,40 @@ from app.db.session import get_db
 from app.core.exceptions import NotFoundError
 from app.properties import schemas, service
 from app.properties.models import PropertyStatus
+from app.core.enums import PropertyType
 from app.core.rate_limit import RateLimiter
 from app.core.auth import verify_property_access
 
-# Example: Strict limit of 5 requests per 60 seconds
 write_limiter = RateLimiter(max_requests=5, window_seconds=60)
 
 router = APIRouter(prefix="/properties", tags=["Properties"])
 
-@router.post("/", response_model=schemas.PropertyOut, status_code=201,dependencies=[Depends(write_limiter)])
+@router.post("/", response_model=schemas.PropertyOut, status_code=201, dependencies=[Depends(write_limiter)])
 async def create_property(data: schemas.PropertyCreate, db: AsyncSession = Depends(get_db)):
     return await service.create_property(db, data)
 
-# In app/properties/router.py
 @router.get("/", response_model=schemas.PropertyList)
+@router.get("/list_properties", response_model=schemas.PropertyList)
 async def list_properties(
     skip: int = Query(0, ge=0), limit: int = Query(20, ge=1, le=100),
-    city: Optional[str] = None, status: Optional[PropertyStatus] = None,
+    city: Optional[str] = None, 
+    status: Optional[PropertyStatus] = None,
+    property_type: Optional[PropertyType] = None,
+    agent_id: Optional[UUID] = None,
     min_price: Optional[float] = None, max_price: Optional[float] = None,
     min_bedrooms: Optional[int] = None, 
-    exact_bedrooms: Optional[int] = None,  # Add this line
+    exact_bedrooms: Optional[int] = None,
     db: AsyncSession = Depends(get_db)
 ):
     total, items = await service.list_properties(db, skip, limit, {
-        "city": city, "status": status, "min_price": min_price, 
-        "max_price": max_price, "min_bedrooms": min_bedrooms,
-        "exact_bedrooms": exact_bedrooms  # Add this line
+        "city": city, 
+        "status": status, 
+        "property_type": property_type,
+        "agent_id": agent_id,
+        "min_price": min_price, 
+        "max_price": max_price, 
+        "min_bedrooms": min_bedrooms,
+        "exact_bedrooms": exact_bedrooms
     })
     return {"total": total, "items": items}
 
@@ -42,14 +50,14 @@ async def get_property(id: UUID, db: AsyncSession = Depends(get_db)):
     except NotFoundError as e:
         raise HTTPException(status_code=404, detail=str(e))
 
-@router.patch("/{id}", response_model=schemas.PropertyOut,dependencies=[Depends(write_limiter), Depends(verify_property_access)])
+@router.patch("/{id}", response_model=schemas.PropertyOut, dependencies=[Depends(write_limiter), Depends(verify_property_access)])
 async def update_property(id: UUID, data: schemas.PropertyUpdate, db: AsyncSession = Depends(get_db)):
     try:
         return await service.update_property(db, id, data)
     except NotFoundError as e:
         raise HTTPException(status_code=404, detail=str(e))
 
-@router.delete("/{id}", status_code=204,dependencies=[Depends(write_limiter), Depends(verify_property_access)])
+@router.delete("/{id}", status_code=204, dependencies=[Depends(write_limiter), Depends(verify_property_access)])
 async def delete_property(id: UUID, db: AsyncSession = Depends(get_db)):
     try:
         await service.delete_property(db, id)

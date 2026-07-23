@@ -6,3 +6,5 @@ from app.customers.models import Customer
 from app.properties.models import Property
 from app.leads.models import Lead
 from app.auth.models import User
+from sqlalchemy import Column, String, Enum, ForeignKey
+from sqlalchemy.dialects.postgresql import UUID
