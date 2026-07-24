@@ -84,13 +84,20 @@ async def create_lead_from_customer(
 async def list_leads(db: AsyncSession, skip: int, limit: int, filters: dict, current_user = None):
     stmt = select(Lead)
     
-    # Role-based scoping security rule:
-    # If the requester is an Agent, restrict leads strictly to those assigned to their agent ID.
-    # (Note: ensure agent profile maps to current_user.id or similar, just like customers do)
-    if current_user and getattr(current_user, "role", None) == "agent":
-        # Resolve agent profile ID if agents have a separate table, 
-        # or filter directly if agent_id maps to user.id:
-        stmt = stmt.where(Lead.agent_id == current_user.id)
+    # Normalize current_user.role to handle both Enum or String safely (case-insensitive or exact match)
+    if current_user and current_user.role:
+        role_val = current_user.role.value if hasattr(current_user.role, "value") else str(current_user.role)
+        
+        # If the user is an agent, restrict leads strictly to their agent_id
+        if role_val.upper() == "AGENT":
+            stmt = stmt.where(Lead.agent_id == current_user.id)
+        elif role_val.upper() == "CUSTOMER":
+            # Optional: ensure customers only see their own leads here as well if queried directly
+            customer_record = await db.scalar(select(Customer).where(Customer.user_id == current_user.id))
+            if customer_record:
+                stmt = stmt.where(Lead.customer_id == customer_record.id)
+            else:
+                stmt = stmt.where(Lead.customer_id == None) # No leads if profile missing
     
     if filters.get("status"):
         stmt = stmt.where(Lead.status == filters["status"])

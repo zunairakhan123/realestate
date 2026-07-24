@@ -56,18 +56,19 @@ async def list_leads(
     customer_id: Optional[UUID] = None, property_id: Optional[UUID] = None,
     created_after: Optional[datetime] = None,
     is_closed: Optional[bool] = None, 
-    current_user: User = Depends(get_current_user), # <-- Inject current user
+    current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db)
 ):
-    # Automatically restrict results if the logged-in user is an agent
-    if getattr(current_user, "role", None) == "AGENT":
-        agent_id = current_user.id
-
-    total, items = await service.list_leads(db, skip, limit, {
-        "status": status, "agent_id": agent_id, "customer_id": customer_id, 
-        "property_id": property_id, "created_after": created_after,
-        "is_closed": is_closed 
-    })
+    # Pass current_user down to the service layer to handle RBAC filtering cleanly
+    total, items = await service.list_leads(
+        db, skip, limit, 
+        {
+            "status": status, "agent_id": agent_id, "customer_id": customer_id, 
+            "property_id": property_id, "created_after": created_after,
+            "is_closed": is_closed
+        },
+        current_user=current_user
+    )
     return {"total": total, "items": items}
 
 @router.get("/{id}", response_model=schemas.LeadDetailOut, dependencies=[Depends(verify_lead_access)])
